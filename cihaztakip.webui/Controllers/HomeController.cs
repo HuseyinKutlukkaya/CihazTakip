@@ -1,4 +1,6 @@
-﻿using cihaztakip.webui.Models;
+﻿using cihaztakip.data.Concrete.EfCore;
+using cihaztakip.webui.Models;
+using cihaztakip.webui.ViewComponents;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -6,16 +8,23 @@ namespace cihaztakip.webui.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext applicationDbContext;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ApplicationDbContext applicationDbContext)
         {
-            _logger = logger;
+            this.applicationDbContext = applicationDbContext;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var list = applicationDbContext.Devices.Select(m => new DeviceViewComponent
+            {
+                Name = m.Name,
+                DeviceId = m.DeviceId,
+              
+            }).ToList();
+
+            return View(list);
         }
 
         public IActionResult Privacy()
