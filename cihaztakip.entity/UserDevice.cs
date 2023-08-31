@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace cihaztakip.entity
 {
-    public class Device
+    public class UserDevice
     {
+        public int UserDeviceId { get; set; }
+        public string UserId { get; set; }
         public int DeviceId { get; set; }
-        public string Name { get; set; }
 
-        public List<UserDevice> UserDevices { get; set; }
-
+        public User User { get; set; }
+        public Device Device { get; set; }
     }
 }

@@ -12,6 +12,6 @@ namespace cihaztakip.entity
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-        public List<Device> Devices { get; set; }   
+        public List<UserDevice> UserDevices { get; set; }
     }
 }

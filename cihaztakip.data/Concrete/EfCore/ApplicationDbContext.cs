@@ -27,7 +27,7 @@ namespace cihaztakip.data.Concrete.EfCore
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new DeviceConfiguration());
-
+            modelBuilder.ApplyConfiguration(new UserDeviceConfiguration());
             modelBuilder.Seed();
         }
     }

@@ -15,10 +15,6 @@ namespace cihaztakip.data.Configurations
         {
             builder.HasKey(x => x.DeviceId);
             builder.Property(x => x.Name).IsRequired().HasMaxLength(100);
-
-            builder.HasOne(d => d.User)
-                   .WithMany(u => u.Devices)
-                   .HasForeignKey(d => d.UserId);
         }
     }
 }
