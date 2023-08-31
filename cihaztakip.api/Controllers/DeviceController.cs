@@ -12,7 +12,7 @@ namespace cihaztakip.api.Controllers
         private IDeviceService _deviceService;
         public DeviceController(IDeviceService _deviceService)
         {
-            _deviceService = _deviceService;
+            this._deviceService = _deviceService;
         }
         [HttpGet]
         public async Task<IActionResult> GetDevices()

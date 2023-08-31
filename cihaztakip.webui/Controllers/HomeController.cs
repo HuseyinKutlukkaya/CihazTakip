@@ -1,7 +1,9 @@
 ﻿using cihaztakip.data.Concrete.EfCore;
+using cihaztakip.entity;
 using cihaztakip.webui.Models;
 using cihaztakip.webui.ViewComponents;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace cihaztakip.webui.Controllers
@@ -15,18 +17,32 @@ namespace cihaztakip.webui.Controllers
             this.applicationDbContext = applicationDbContext;
         }
 
-        public IActionResult Index()
-        {
-            var list = applicationDbContext.Devices.Select(m => new DeviceViewComponent
-            {
-                Name = m.Name,
-                DeviceId = m.DeviceId,
+        //public IActionResult Index()
+        //{
+        //    var list = applicationDbContext.Devices.Select(m => new DeviceViewComponent
+        //    {
+        //        Name = m.Name,
+        //        DeviceId = m.DeviceId,
               
-            }).ToList();
+        //    }).ToList();
+
+        //    return View(list);
+        //}
+        public async Task<IActionResult> Index()
+        {
+            var list = new List<DeviceViewComponent>();
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("http://localhost:5057/api/device"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    list = JsonConvert.DeserializeObject<List<DeviceViewComponent>>(apiResponse);
+                }
+            }
 
             return View(list);
         }
-
         public IActionResult Privacy()
         {
             return View();
