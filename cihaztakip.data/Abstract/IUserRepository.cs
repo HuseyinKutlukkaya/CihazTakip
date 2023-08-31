@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace cihaztakip.data.Abstract
 {
-    internal interface IUserRepository:IRepository<User>
+    public interface IUserRepository:IRepository<User>
     {
     }
 }
