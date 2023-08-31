@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34018.315
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cihaztakip.webui", "cihaztakip.webui\cihaztakip.webui.csproj", "{A1B8F709-AD30-4DDC-A8DC-98EFFC8A129C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A1B8F709-AD30-4DDC-A8DC-98EFFC8A129C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B8F709-AD30-4DDC-A8DC-98EFFC8A129C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B8F709-AD30-4DDC-A8DC-98EFFC8A129C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B8F709-AD30-4DDC-A8DC-98EFFC8A129C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6EC22A39-F57A-4D1E-922E-4858AD07069F}
+	EndGlobalSection
+EndGlobal
