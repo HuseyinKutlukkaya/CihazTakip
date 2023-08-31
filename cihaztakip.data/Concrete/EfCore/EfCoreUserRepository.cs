@@ -10,12 +10,12 @@ namespace cihaztakip.data.Concrete.EfCore
 {
     public class EfCoreUserRepository: EfCoreGenericRepository<User>, IUserRepository
     {
-        public EfCoreUserRepository(CihazTakipContext ctx) : base(ctx)
+        public EfCoreUserRepository(ApplicationDbContext ctx) : base(ctx)
         {
         }
-        private CihazTakipContext CihazTakipContext
+        private ApplicationDbContext CihazTakipContext
         {
-            get { return context as CihazTakipContext; }
+            get { return context as ApplicationDbContext; }
         }
     }
 }

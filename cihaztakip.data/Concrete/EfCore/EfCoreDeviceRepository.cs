@@ -11,12 +11,12 @@ namespace cihaztakip.data.Concrete.EfCore
 {
     public class EfCoreDeviceRepository : EfCoreGenericRepository<Device>, IDeviceRepository
     {
-        public EfCoreDeviceRepository(CihazTakipContext ctx) : base(ctx)
+        public EfCoreDeviceRepository(ApplicationDbContext ctx) : base(ctx)
         {
         }
-        private CihazTakipContext CihazTakipContext
+        private ApplicationDbContext CihazTakipContext
         {
-            get { return context as CihazTakipContext; }
+            get { return context as ApplicationDbContext; }
         }
     }
 }
