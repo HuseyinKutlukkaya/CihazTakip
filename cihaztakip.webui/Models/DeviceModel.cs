@@ -1,6 +1,6 @@
-﻿namespace cihaztakip.webui.ViewComponents
+﻿namespace cihaztakip.webui.Models
 {
-    public class DeviceViewComponent
+    public class DeviceModel
     {
         public int DeviceId { get; set; }
         public string Name { get; set; }

@@ -1,7 +1,6 @@
 ﻿using cihaztakip.data.Concrete.EfCore;
 using cihaztakip.entity;
 using cihaztakip.webui.Models;
-using cihaztakip.webui.ViewComponents;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
@@ -30,7 +29,7 @@ namespace cihaztakip.webui.Controllers
         //}
         public async Task<IActionResult> Index()
         {
-            var list = new List<DeviceViewComponent>();
+            var list = new List<DeviceModel>();
 
             //using (var httpClient = new HttpClient())
             //{
