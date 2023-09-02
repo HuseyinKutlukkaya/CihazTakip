@@ -4,6 +4,7 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
             <ul class="navbar-nav">
 
@@ -40,6 +41,29 @@
                 </li>
 
 
+            </ul>
+
+            <ul class="navbar-nav ms-auto">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        <a href="#" class="nav-link text-white">
+                            @User.Identity.Name
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link text-white">Çıkış</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a href="#" class="nav-link text-white">Giriş</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link text-white">Kayıt</a>
+                    </li>
+                }
             </ul>
         </div>
     </div>
