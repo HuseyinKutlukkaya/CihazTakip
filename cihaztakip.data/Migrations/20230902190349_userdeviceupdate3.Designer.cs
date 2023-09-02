@@ -12,8 +12,8 @@ using cihaztakip.data.Concrete.EfCore;
 namespace cihaztakip.data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230831185056_initial")]
-    partial class initial
+    [Migration("20230902190349_userdeviceupdate3")]
+    partial class userdeviceupdate3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -271,16 +271,22 @@ namespace cihaztakip.data.Migrations
 
             modelBuilder.Entity("cihaztakip.entity.UserDevice", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                    b.Property<int>("UserDeviceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserDeviceId"));
 
                     b.Property<int>("DeviceId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("UserDeviceId")
-                        .HasColumnType("integer");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.HasKey("UserId", "DeviceId");
+                    b.HasKey("UserDeviceId");
+
+                    b.HasAlternateKey("UserId", "DeviceId");
 
                     b.HasIndex("DeviceId");
 

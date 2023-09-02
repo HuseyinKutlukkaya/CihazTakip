@@ -9,6 +9,7 @@ namespace cihaztakip.business.Abstract
 {
     public interface IDeviceService
     {
-        Task<List<Device>> GetAll();
+        List<Device> GetAll();
+        List<Device> GetAllWithUserData();
     }
 }

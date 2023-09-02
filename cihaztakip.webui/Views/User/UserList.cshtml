@@ -1,0 +1,45 @@
+﻿@model UserListViewModel
+
+<table class="table">
+    <thead>
+        <tr>
+            <td >Email</td>
+            <td >Ad</td>
+            <td>Soyad</td>
+            <td >Rol</td>
+            <td ></td>
+            <td ></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (UserData User in Model.Users)
+        {
+            @if (Model.Users.Count > 0)
+            {
+
+                <tr>
+
+                    <td>@User.User.Email</td>
+                    <td>@User.User.FirstName</td>
+                    <td>@User.User.LastName</td>
+                    <td>@User.Role</td>   
+                    <td>
+                        <a href="#" class="btn btn-primary btn-sm mr-2">Düzenle</a> 
+                    </td>
+                    <td>
+                        <a href="#" class="btn btn-danger btn-sm mr-2">Sil</a>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <div class="alert alert-warning">
+                    <h3>Kullanıcı Bulunmamaktadır./h3>
+                </div>
+            }
+
+        }
+
+
+    </tbody>
+</table>

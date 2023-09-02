@@ -13,10 +13,24 @@ namespace cihaztakip.data.Concrete.EfCore
     {
         public EfCoreDeviceRepository(ApplicationDbContext ctx) : base(ctx)
         {
+
         }
-        private ApplicationDbContext CihazTakipContext
+        private ApplicationDbContext ApplicationDbContext
         {
             get { return context as ApplicationDbContext; }
+        }
+
+        public List<Device> GetAllWithUserData()
+        {
+            var devices = ApplicationDbContext.
+                Devices.
+                Include(i=>i.UserDevices).
+                ThenInclude(i=>i.User).
+                ToList();
+            
+
+
+            return devices;
         }
     }
 }

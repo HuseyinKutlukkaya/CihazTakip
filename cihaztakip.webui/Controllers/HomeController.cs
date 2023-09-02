@@ -1,7 +1,9 @@
-﻿using cihaztakip.data.Concrete.EfCore;
+﻿using cihaztakip.business.Abstract;
+using cihaztakip.data.Concrete.EfCore;
 using cihaztakip.entity;
 using cihaztakip.webui.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Diagnostics;
 
@@ -9,39 +11,22 @@ namespace cihaztakip.webui.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IDeviceService _deviceService;
         private readonly ApplicationDbContext applicationDbContext;
 
-        public HomeController(ApplicationDbContext applicationDbContext)
+        public HomeController(IDeviceService deviceService, ApplicationDbContext applicationDbContext)
         {
+            _deviceService = deviceService;
             this.applicationDbContext = applicationDbContext;
         }
 
-        //public IActionResult Index()
-        //{
-        //    var list = applicationDbContext.Devices.Select(m => new DeviceViewComponent
-        //    {
-        //        Name = m.Name,
-        //        DeviceId = m.DeviceId,
-              
-        //    }).ToList();
-
-        //    return View(list);
-        //}
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var list = new List<DeviceModel>();
-
-            //using (var httpClient = new HttpClient())
-            //{
-            //    using (var response = await httpClient.GetAsync("http://localhost:5057/api/device"))
-            //    {
-            //        string apiResponse = await response.Content.ReadAsStringAsync();
-            //        list = JsonConvert.DeserializeObject<List<DeviceViewComponent>>(apiResponse);
-            //    }
-            //}
-
-            return View(list);
+            List<Device> list = _deviceService.GetAllWithUserData();
+     
+            return View();
         }
+
         public IActionResult Privacy()
         {
             return View();

@@ -21,24 +21,19 @@ namespace cihaztakip.data.Concrete.EfCore
             context.Set<TEntity>().Add(entity);
         }
 
-        public async Task CreateAsync(TEntity entity)
-        {
-            await context.Set<TEntity>().AddAsync(entity);
-        }
-
         public void Delete(TEntity entity)
         {
             context.Set<TEntity>().Remove(entity);
         }
 
-        public async Task<List<TEntity>> GetAll()
+        public List<TEntity> GetAll()
         {
-            return await context.Set<TEntity>().ToListAsync();
+            return context.Set<TEntity>().ToList();
         }
 
-        public async Task<TEntity> GetById(int id)
+        public TEntity GetById(int id)
         {
-            return await context.Set<TEntity>().FindAsync(id);
+            return context.Set<TEntity>().Find(id);
         }
 
         public virtual void Update(TEntity entity)

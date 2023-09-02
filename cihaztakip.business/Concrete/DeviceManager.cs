@@ -16,9 +16,14 @@ namespace cihaztakip.business.Concrete
         {
             _unitofwork = unitofwork;
         }
-        public async Task<List<Device>> GetAll()
+        public List<Device> GetAll()
         {
-            return await _unitofwork.Devices.GetAll();
+            return  _unitofwork.Devices.GetAll();
+        }
+
+        public List<Device> GetAllWithUserData()
+        {
+            return _unitofwork.Devices.GetAllWithUserData();
         }
     }
 }

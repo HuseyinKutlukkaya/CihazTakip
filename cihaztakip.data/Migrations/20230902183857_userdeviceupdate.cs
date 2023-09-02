@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace cihaztakip.data.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class userdeviceupdate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -178,13 +178,15 @@ namespace cihaztakip.data.Migrations
                 name: "UserDevice",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    DeviceId = table.Column<int>(type: "integer", nullable: false),
                     UserDeviceId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    DeviceId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserDevice", x => new { x.UserId, x.DeviceId });
+                    table.PrimaryKey("PK_UserDevice", x => x.UserDeviceId);
+                    table.UniqueConstraint("AK_UserDevice_UserId_DeviceId", x => new { x.UserId, x.DeviceId });
                     table.ForeignKey(
                         name: "FK_UserDevice_AspNetUsers_UserId",
                         column: x => x.UserId,

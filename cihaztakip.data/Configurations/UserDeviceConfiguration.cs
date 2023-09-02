@@ -13,8 +13,18 @@ namespace cihaztakip.data.Configurations
     {
         public void Configure(EntityTypeBuilder<UserDevice> builder)
         {
-            builder.HasKey(c => new { c.UserId, c.DeviceId });
+            builder.HasKey(ud => ud.UserDeviceId);
+            builder.HasAlternateKey(ud => new { ud.UserId, ud.DeviceId });
 
+     
+            builder.HasOne(ud => ud.User)
+                   .WithMany(u => u.UserDevices)
+                   .HasForeignKey(ud => ud.UserId);
+
+           
+            builder.HasOne(ud => ud.Device)
+                   .WithMany(d => d.UserDevices)
+                   .HasForeignKey(ud => ud.DeviceId);
 
         }
     }
