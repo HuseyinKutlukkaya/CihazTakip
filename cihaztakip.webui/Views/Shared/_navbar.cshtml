@@ -1,4 +1,9 @@
-﻿<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+﻿@{
+    string roltext = User.IsInRole("admin") ? "Admin" : User.IsInRole("manager")?"Manager":"User";
+}
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Navbar</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,21 +52,21 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <li class="nav-item">
-                        <a href="#" class="nav-link text-white">
-                            @User.Identity.Name
+                        <a href="/account/manage" class="nav-link text-white">
+                            [@roltext] @User.Identity.Name
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link text-white">Çıkış</a>
+                        <a href ="/account/logout" class="nav-link text-white">Çıkış</a>
                     </li>
                 }
                 else
                 {
                     <li class="nav-item">
-                        <a href="#" class="nav-link text-white">Giriş</a>
+                        <a href="/account/login" class="nav-link text-white">Giriş</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link text-white">Kayıt</a>
+                        <a  href="/account/register" class="nav-link text-white">Kayıt</a>
                     </li>
                 }
             </ul>
