@@ -12,17 +12,16 @@ namespace cihaztakip.webui.Controllers
     public class HomeController : Controller
     {
         private readonly IDeviceService _deviceService;
-        private readonly ApplicationDbContext applicationDbContext;
 
-        public HomeController(IDeviceService deviceService, ApplicationDbContext applicationDbContext)
+        public HomeController(IDeviceService deviceService)
         {
             _deviceService = deviceService;
-            this.applicationDbContext = applicationDbContext;
+         
         }
 
         public IActionResult Index()
         {
-            List<Device> list = _deviceService.GetAllWithUserData();
+        
      
             return View();
         }
