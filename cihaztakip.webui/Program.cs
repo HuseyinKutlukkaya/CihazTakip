@@ -3,9 +3,11 @@ using cihaztakip.business.Concrete;
 using cihaztakip.data.Abstract;
 using cihaztakip.data.Concrete.EfCore;
 using cihaztakip.entity;
+using cihaztakip.webui.Identity;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,7 +39,18 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
+name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+// Seed Identity
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var userManager = services.GetRequiredService<UserManager<User>>();
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    var configuration = services.GetRequiredService<IConfiguration>();
+    SeedIdentity.Seed(userManager, roleManager, configuration).Wait();
+}
+
 app.Run();
+
