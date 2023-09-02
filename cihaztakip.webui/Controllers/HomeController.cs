@@ -32,14 +32,14 @@ namespace cihaztakip.webui.Controllers
         {
             var list = new List<DeviceViewComponent>();
 
-            using (var httpClient = new HttpClient())
-            {
-                using (var response = await httpClient.GetAsync("http://localhost:5057/api/device"))
-                {
-                    string apiResponse = await response.Content.ReadAsStringAsync();
-                    list = JsonConvert.DeserializeObject<List<DeviceViewComponent>>(apiResponse);
-                }
-            }
+            //using (var httpClient = new HttpClient())
+            //{
+            //    using (var response = await httpClient.GetAsync("http://localhost:5057/api/device"))
+            //    {
+            //        string apiResponse = await response.Content.ReadAsStringAsync();
+            //        list = JsonConvert.DeserializeObject<List<DeviceViewComponent>>(apiResponse);
+            //    }
+            //}
 
             return View(list);
         }
