@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\cihaztakip.business\cihaztakip.business.csproj" />
     <ProjectReference Include="..\cihaztakip.data\cihaztakip.data.csproj" />
   </ItemGroup>
 
