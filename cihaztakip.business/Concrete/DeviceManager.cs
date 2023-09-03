@@ -16,6 +16,13 @@ namespace cihaztakip.business.Concrete
         {
             _unitofwork = unitofwork;
         }
+
+        public void Create(Device device)
+        {
+            _unitofwork.Devices.Create(device);
+            _unitofwork.Save(); 
+        }
+
         public List<Device> GetAll()
         {
             return  _unitofwork.Devices.GetAll();
