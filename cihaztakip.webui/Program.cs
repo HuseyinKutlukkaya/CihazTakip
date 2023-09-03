@@ -16,6 +16,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(o => o.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
+
+
+
 builder.Services.Configure<IdentityOptions>(options => {
     // password
     options.Password.RequireDigit = true;
@@ -49,6 +52,7 @@ builder.Services.ConfigureApplicationCookie(options => {
 });
 
 
+builder.Services.AddScoped<UserManager<User>, CustomUserManager>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IDeviceService, DeviceManager>();
 
@@ -79,7 +83,7 @@ name: "default",
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var userManager = services.GetRequiredService<UserManager<User>>();
+    var userManager = services.GetRequiredService<CustomUserManager>();
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
     var configuration = services.GetRequiredService<IConfiguration>();
     SeedIdentity.Seed(userManager, roleManager, configuration).Wait();
