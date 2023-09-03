@@ -34,5 +34,13 @@ namespace cihaztakip.data.Concrete.EfCore
 
             return devices;
         }
+
+        public Device GetByIdWithUserDeviceData(int id)
+        {
+            return ApplicationDbContext.Devices.Where(i => i.DeviceId == id).
+                Include(i => i.UserDevices).
+                ThenInclude(i => i.User).
+                FirstOrDefault();
+        }
     }
 }

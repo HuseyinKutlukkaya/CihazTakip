@@ -9,12 +9,10 @@ namespace cihaztakip.webui.Controllers
     public class UserController : Controller
     {
         private UserManager<User> _userManager;
-        private SignInManager<User> _signInManager;
         private RoleManager<IdentityRole> _roleManager;
-        public UserController(UserManager<User> userManager, SignInManager<User> signInManager,RoleManager<IdentityRole> roleManager)
+        public UserController(UserManager<User> userManager,RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _roleManager = roleManager;
         }
         public IActionResult UserList()

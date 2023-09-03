@@ -22,7 +22,7 @@
                     <td>@Device.Name</td>
                     <td> @(Device.UserDevices.Count>0 ?"Var":"Yok") </td>
                     <td>
-                        <a href="#" class="btn btn-primary btn-sm mr-2">Düzenle</a>
+                        <a href="/device/editdevice/@Device.DeviceId" class="btn btn-primary btn-sm mr-2">Düzenle</a>
                     </td>
                     <td>
                         <form asp-action="DeleteDevice" method="post" onsubmit="return confirm('@Device.DeviceId Numaralı cihazı silmek istediğinizden emin misiniz?')">

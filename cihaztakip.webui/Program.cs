@@ -55,6 +55,7 @@ builder.Services.ConfigureApplicationCookie(options => {
 builder.Services.AddScoped<UserManager<User>, CustomUserManager>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IDeviceService, DeviceManager>();
+builder.Services.AddScoped<IUserDeviceService, UserDeviceManager>();
 
 
 

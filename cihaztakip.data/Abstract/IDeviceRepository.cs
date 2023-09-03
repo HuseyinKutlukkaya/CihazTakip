@@ -10,6 +10,6 @@ namespace cihaztakip.data.Abstract
     public interface IDeviceRepository : IRepository<Device> 
     {
         List<Device> GetAllWithUserData();
-      
+        Device GetByIdWithUserDeviceData(int id);
     }
 }
