@@ -32,31 +32,36 @@ namespace cihaztakip.webui.Controllers
             });
         }
         [HttpPost]
-
         public async Task<IActionResult> Login(LoginModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+
+                var errors = ModelState.Values
+             .SelectMany(v => v.Errors)
+             .Select(e => e.ErrorMessage)
+             .ToList();
+
+                return Json(new { success = false, message = "Validation failed", errors = errors });
+
             }
             var user = await _userManager.FindByNameAsync(model.UserName);
             if (user == null)
             {
                 ModelState.AddModelError("", "Bu kullanıcı adı ile bir kayıt yoktur");
-                return View(model);
+                return Json(new { success = false, message = "Kullanıcı adı veya şifre hatalı!" });
             }
 
-            //if(!await _userManager.IsEmailConfirmedAsync(user))
-            //{
-            //    ModelState.AddModelError("", "Mail ile hesabınızı onaylayın.");
-            //    return View(model);
-            //}
             var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
+
             if (result.Succeeded)
             {
-                return Redirect(model.ReturnUrl ?? "~/");
+
+                return Json(new { success = true, redirectUrl = Url.Action("Index", "Home") });
             }
-            return View();
+            else
+                return Json(new { success = false, message = "Kullanıcı adı veya şifre hatalı!" });
+           
         }
         [HttpGet]
         public IActionResult Register()
