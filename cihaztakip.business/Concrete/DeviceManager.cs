@@ -32,5 +32,17 @@ namespace cihaztakip.business.Concrete
         {
             return _unitofwork.Devices.GetAllWithUserData();
         }
+
+
+        public void Delete(Device device)
+        {
+            _unitofwork.Devices.Delete(device);
+            _unitofwork.Save();
+        }
+
+        public Device GetById(int id)
+        {
+           return _unitofwork.Devices.GetById(id);
+        }
     }
 }

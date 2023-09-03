@@ -20,6 +20,8 @@ namespace cihaztakip.data.Concrete.EfCore
             get { return context as ApplicationDbContext; }
         }
 
+ 
+
         public List<Device> GetAllWithUserData()
         {
             var devices = ApplicationDbContext.

@@ -17,7 +17,7 @@ namespace cihaztakip.webui.Controllers
         public IActionResult DeviceList()
         {
             DeviceListViewModel list = new DeviceListViewModel();
-            list.Devices=_deviceService.GetAllWithUserData();
+            list.Devices = _deviceService.GetAllWithUserData();
             return View(list);
         }
 
@@ -31,11 +31,25 @@ namespace cihaztakip.webui.Controllers
             if (ModelState.IsValid)
             {
                 Device device = new Device() { Name = model.Name };
-               _deviceService.Create(device);
+                _deviceService.Create(device);
                 return RedirectToAction("DeviceList");
             }
             ModelState.AddModelError("", "Bir Sıkıntı var tekrar dene.");
             return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteDevice(int deviceId)
+        {
+            var device =  _deviceService.GetById(deviceId);
+
+            if (device != null)
+            {
+                _deviceService.Delete(device);
+            }
+
+           
+
+            return RedirectToAction("DeviceList");
         }
 
     }
