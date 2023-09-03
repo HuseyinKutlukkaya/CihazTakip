@@ -11,13 +11,15 @@ namespace cihaztakip.webui.Controllers
     public class AccountController : Controller
     {
         private UserManager<User> _userManager;
+        private RoleManager<IdentityRole> _roleManager;
         private SignInManager<User> _signInManager;
         private IDeviceService _deviceService;
-        public AccountController( UserManager<User> userManager, SignInManager<User> signInManager,IDeviceService deviceService)
+        public AccountController( UserManager<User> userManager, SignInManager<User> signInManager,IDeviceService deviceService, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _deviceService = deviceService;
+            _roleManager = roleManager;
 
         }
         public IActionResult AccessDenied()
@@ -86,7 +88,14 @@ namespace cihaztakip.webui.Controllers
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
+                string role = "user";
+                var roleExists = await _roleManager.RoleExistsAsync(role);
 
+                if (roleExists)
+                {
+                    // Assign the user to the selected role
+                    await _userManager.AddToRoleAsync(user, role);
+                }
                 return RedirectToAction("Login", "Account");
             }
             ModelState.AddModelError("", "Bir Sıkıntı var tekrar dene.");
