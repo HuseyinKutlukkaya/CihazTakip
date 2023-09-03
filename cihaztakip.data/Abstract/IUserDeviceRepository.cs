@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace cihaztakip.data.Abstract
 {
-    public interface IUserRepository:IRepository<User>
+    public interface IUserDeviceRepository:IRepository<UserDevice>
     {
+        public void DeleteAllUserData(string id);
     }
 }

@@ -14,7 +14,7 @@ namespace cihaztakip.data.Concrete.EfCore
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Device> Devices { get; set; }
-
+        public DbSet<UserDevice> UserDevices { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {

@@ -14,13 +14,15 @@ namespace cihaztakip.business.Concrete
 {
     public class CustomUserManager : UserManager<User>
     {
+        private readonly IUnitOfWork _unitofwork;
         // Inject required services in the constructor
-        public CustomUserManager(IUserStore<User> store, IOptions<IdentityOptions> optionsAccessor,
+        public CustomUserManager(IUserStore<User> store, IUnitOfWork unitofwork, IOptions<IdentityOptions> optionsAccessor,
             IPasswordHasher<User> passwordHasher, IEnumerable<IUserValidator<User>> userValidators,
             IEnumerable<IPasswordValidator<User>> passwordValidators, ILookupNormalizer keyNormalizer,
             IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<User>> logger)
             : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
         {
+            _unitofwork = unitofwork;
         }
 
         // Override the DeleteAsync method to add custom behavior
@@ -28,7 +30,8 @@ namespace cihaztakip.business.Concrete
         {
             // Add your custom logic here before deleting the user
 
-
+            _unitofwork.UserDevices.DeleteAllUserData(user.Id);
+            _unitofwork.Save();
 
 
             // Call the base DeleteAsync method to perform the actual deletion

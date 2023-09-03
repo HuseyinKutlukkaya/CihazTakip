@@ -16,12 +16,14 @@ namespace cihaztakip.data.Concrete.EfCore
             _context = context;
         }
         private EfCoreDeviceRepository _deviceRepository;
-        private EfCoreUserRepository _userRepository;
+        private EfCoreUserDeviceRepository _userRepository;
         public IDeviceRepository Devices =>
              _deviceRepository = _deviceRepository ?? new EfCoreDeviceRepository(_context);
 
-        public IUserRepository Users =>
-             _userRepository = _userRepository ?? new EfCoreUserRepository(_context);
+        public IUserDeviceRepository UserDevices =>
+             _userRepository = _userRepository ?? new EfCoreUserDeviceRepository(_context);
+
+
         public void Dispose()
         {
             _context.Dispose();
