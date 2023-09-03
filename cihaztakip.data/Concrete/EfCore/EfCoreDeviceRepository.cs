@@ -20,7 +20,17 @@ namespace cihaztakip.data.Concrete.EfCore
             get { return context as ApplicationDbContext; }
         }
 
- 
+        public List<Device> GetAllByUserId(string id)
+        {
+            var devices = ApplicationDbContext.Devices
+                         .Include(d => d.UserDevices)  // Include UserDevices 
+                         .Where(d => d.UserDevices.Any(ud => ud.UserId == id)) // Filter with userId
+                         .ToList();
+
+
+
+            return devices;
+        }
 
         public List<Device> GetAllWithUserData()
         {

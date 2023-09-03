@@ -1,4 +1,5 @@
-﻿using cihaztakip.entity;
+﻿using cihaztakip.business.Abstract;
+using cihaztakip.entity;
 using cihaztakip.webui.Models;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Identity;
@@ -11,11 +12,12 @@ namespace cihaztakip.webui.Controllers
     {
         private UserManager<User> _userManager;
         private SignInManager<User> _signInManager;
-
-        public AccountController( UserManager<User> userManager, SignInManager<User> signInManager)
+        private IDeviceService _deviceService;
+        public AccountController( UserManager<User> userManager, SignInManager<User> signInManager,IDeviceService deviceService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _deviceService = deviceService;
 
         }
         public IActionResult AccessDenied()
@@ -90,6 +92,15 @@ namespace cihaztakip.webui.Controllers
         {
             await _signInManager.SignOutAsync();
             return Redirect("~/");
+        }
+
+        public IActionResult Profile()
+        {
+            DeviceListViewModel list = new DeviceListViewModel();
+            string userId = _userManager.GetUserId(User);
+            list.Devices = _deviceService.GetAllByUserId(userId);
+
+            return View(list);
         }
     }
 }

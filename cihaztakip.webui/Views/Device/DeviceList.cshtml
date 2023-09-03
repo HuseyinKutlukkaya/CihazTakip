@@ -1,47 +1,49 @@
 ﻿@model DeviceListViewModel
-
-<table class="table">
-    <thead>
-        <tr>
-            <td>Cihaz Id</td>
-            <td>Cihaz Adı</td>
-            <td>Cihaz Kullanıcısı</td>
-            <td></td>
-            <td></td>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (Device Device in Model.Devices)
-        {
-            @if (Model.Devices.Count > 0)
+@if (Model.Devices.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Cihaz Id</td>
+                <td>Cihaz Adı</td>
+                <td>Cihaz Kullanıcısı</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Device Device in Model.Devices)
             {
+         
 
-                <tr>
+                    <tr>
 
-                    <td>@Device.DeviceId</td>
-                    <td>@Device.Name</td>
-                    <td> @(Device.UserDevices.Count>0 ?"Var":"Yok") </td>
-                    <td>
-                        <a href="/device/editdevice/@Device.DeviceId" class="btn btn-primary btn-sm mr-2">Düzenle</a>
-                    </td>
-                    <td>
-                        <form asp-action="DeleteDevice" method="post" onsubmit="return confirm('@Device.DeviceId Numaralı cihazı silmek istediğinizden emin misiniz?')">
-                            <input type="hidden" name="deviceId" value="@Device.DeviceId" />
-                            <button type="submit" class="btn btn-danger  btn-sm mr-2">Sil</button>
-                        </form>
-                    </td>
+                        <td>@Device.DeviceId</td>
+                        <td>@Device.Name</td>
+                        <td> @(Device.UserDevices.Count>0 ?"Var":"Yok") </td>
+                        <td>
+                            <a href="/device/editdevice/@Device.DeviceId" class="btn btn-primary btn-sm mr-2">Düzenle</a>
+                        </td>
+                        <td>
+                            <form asp-action="DeleteDevice" method="post" onsubmit="return confirm('@Device.DeviceId Numaralı cihazı silmek istediğinizden emin misiniz?')">
+                                <input type="hidden" name="deviceId" value="@Device.DeviceId" />
+                                <button type="submit" class="btn btn-danger  btn-sm mr-2">Sil</button>
+                            </form>
+                        </td>
             
-                </tr>
-            }
-            else//TODO:EKRANA BİR SÜRÜ HATA YAZDIRIYO 
-            {
-                <div class="alert alert-warning">
-                    <h3>Cihaz Bulunmamaktadır./h3>
-                </div>
+                    </tr>
+       
+
             }
 
-        }
 
+        </tbody>
 
-    </tbody>
-</table>
+    </table>
+}
+else//TODO:EKRANA BİR SÜRÜ HATA YAZDIRIYO
+{
+    <div class="alert alert-warning">
+        <h3>Cihaz Bulunmamaktadır./h3>
+    </div>
+}

@@ -1,0 +1,38 @@
+﻿@model DeviceListViewModel
+
+
+@if (Model.Devices.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Cihaz Id</td>
+                <td>Cihaz Adı</td>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Device Device in Model.Devices)
+            {
+       
+
+                    <tr>
+
+                        <td>@Device.DeviceId</td>
+                        <td>@Device.Name</td>
+
+                    </tr>
+    
+
+            }
+
+
+        </tbody>
+    </table>
+}
+else//TODO:EKRANA BİR SÜRÜ HATA YAZDIRIYO
+{
+    <div class="alert alert-warning">
+        <h3>Cihaz Bulunmamaktadır.</h3>
+    </div>
+}

@@ -11,5 +11,6 @@ namespace cihaztakip.data.Abstract
     {
         List<Device> GetAllWithUserData();
         Device GetByIdWithUserDeviceData(int id);
+        List<Device> GetAllByUserId(string id);
     }
 }

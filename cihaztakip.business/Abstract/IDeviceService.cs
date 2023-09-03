@@ -11,6 +11,7 @@ namespace cihaztakip.business.Abstract
     {
         List<Device> GetAll();
         List<Device> GetAllWithUserData();
+        List<Device> GetAllByUserId(string id);
         void Update(Device device);
         void Create(Device device);
         void Delete(Device device);

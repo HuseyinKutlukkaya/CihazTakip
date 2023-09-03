@@ -55,5 +55,10 @@ namespace cihaztakip.business.Concrete
             _unitofwork.Devices.Update(device);
             _unitofwork.Save();
         }
+
+        public List<Device> GetAllByUserId(string id )
+        {
+            return _unitofwork.Devices.GetAllByUserId(id);
+        }
     }
 }
