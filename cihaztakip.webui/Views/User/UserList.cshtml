@@ -27,7 +27,10 @@
                         <a href="/user/useredit/@User.User.Id" class="btn btn-primary btn-sm mr-2">Düzenle</a> 
                     </td>
                     <td>
-                        <a href="#" class="btn btn-danger btn-sm mr-2">Sil</a>
+                        <form asp-action="UserDelete" method="post" onsubmit="return confirm('@User.User.Email Mailine Sahip kullanıcıyı silmek istediğinizden emin misiniz?')">
+                            <input type="hidden" name="id" value="@User.User.Id" />
+                            <button type="submit" class="btn btn-danger  btn-sm mr-2">Sil</button>
+                        </form>
                     </td>
                 </tr>
             }

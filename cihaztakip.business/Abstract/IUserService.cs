@@ -8,5 +8,7 @@ namespace cihaztakip.business.Abstract
 {
     public interface IUserService
     {
+        public void DeleteUserData();
+
     }
 }
