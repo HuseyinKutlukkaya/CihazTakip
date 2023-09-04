@@ -73,19 +73,19 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "@Url.Action("Register", "Account")", // Specify the URL of your registration action
+                    url: "@Url.Action("Register", "Account")", 
                     data: formData,
                     success: function (result) {
                         if (result.success) {
-                            // Registration succeeded, redirect to a success page or home page
+
                             window.location.href = result.redirectUrl;
                         } else {
-                            // Display an error message returned from the server
-                            alert(result.message);
+
+                            alert("Hata:\n" + result.message);
                         }
                     },
                     error: function () {
-                        // Handle errors, e.g., display a generic error message
+        
                         alert("Kayıt işlemi başarısız.");
                     }
                 });

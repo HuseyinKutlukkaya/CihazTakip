@@ -1,5 +1,5 @@
 ﻿@{
-    string roltext = User.IsInRole("admin") ? "Admin" : User.IsInRole("manager")?"Manager":"User";
+    string roltext = User.IsInRole("admin") ? "Admin" : User.IsInRole("authorized") ? "Authorized" : "User";
 }
 
 

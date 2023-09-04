@@ -77,7 +77,7 @@
                     if (result.success) {
                         window.location.href = result.redirectUrl; // Redirect on success
                     } else {
-                        alert("Hata: " + result.message);
+                        alert(result.message);
                     }
                 },
                 error: function (error) {
@@ -102,7 +102,7 @@
                     
                     window.location.href = result.redirectUrl; //redireciton
                 } else {
-                    alert("Hata: " + result.message);
+                    alert("Hata:\n" + result.message);
                 }
             },
             error: function (error) {
@@ -129,7 +129,7 @@
 
                     window.location.href = result.redirectUrl; //redireciton
                 } else {
-                    alert("Hata: " + result.message);
+                    alert("Hata:\n" + result.message);
                 }
             },
             error: function (error) {

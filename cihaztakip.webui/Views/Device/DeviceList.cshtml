@@ -46,16 +46,16 @@ else
                 data: { deviceId: deviceId },
                 success: function (result) {
                     if (result.success) {
-                        // Reload the page after successful deletion
+
                         window.location.reload();
                     } else {
-                        // Display an error message returned from the server
-                        // You can customize this based on your application's needs
-                        alert(result.message);
+
+
+                        alert("Hata:\n" + result.message);
                     }
                 },
                 error: function () {
-                    // Handle errors, e.g., display a generic error message
+                 
                     alert("Cihazı silerken bir hata oluştu.");
                 }
             });

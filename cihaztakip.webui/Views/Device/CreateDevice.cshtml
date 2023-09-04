@@ -36,14 +36,13 @@
                     if (result.success) {
                         window.location.href = result.redirectUrl; // Redirect to the success page
                     } else {
-                        // Display an error message returned from the server
-                        // You can customize this based on your application's needs
-                        alert(result.message);
+
+                        alert("Hata:\n" + result.message);
                     }
                 },
 
                 error: function () {
-                    // Handle errors, e.g., display a generic error message
+
                     alert("Cihaz oluşturulurken bir hata oluştu.");
                 }
             });
