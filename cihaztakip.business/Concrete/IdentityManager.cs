@@ -11,6 +11,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace cihaztakip.business.Concrete
 {
@@ -24,8 +25,8 @@ namespace cihaztakip.business.Concrete
 
         public async Task<UserListViewModel> GetAllUsersWithRoles()
         {
-           
-            List<User> users =  _unitofwork.UserManager.Users.ToList(); //Get all the users
+
+            List<User> users = _unitofwork.UserManager.Users.ToList(); //Get all the users
 
             var userdata = new UserListViewModel//Create user x role list
             {
@@ -42,19 +43,19 @@ namespace cihaztakip.business.Concrete
         {
             var user = await _unitofwork.UserManager.FindByIdAsync(id);
 
-            return  _unitofwork.UserManager.GetRolesAsync(user).Result.FirstOrDefault().ToString();
+            return _unitofwork.UserManager.GetRolesAsync(user).Result.FirstOrDefault().ToString();
         }
 
         public async Task<List<IdentityRole>> GetRoles()
         {
-            return _unitofwork.RoleManager.Roles.ToList();
+            return  _unitofwork.RoleManager.Roles.ToList();
         }
 
         public async Task<UserDetailsModel> GetUserDetails(string id)
         {
 
             var user = await _unitofwork.UserManager.FindByIdAsync(id);
-            if (user!=null)
+            if (user != null)
             {
                 return new UserDetailsModel()
                 {
@@ -66,7 +67,7 @@ namespace cihaztakip.business.Concrete
                     Role = await GetRoleOfUser(id)
                 };
             }
-            
+
             return null;
         }
 
@@ -75,20 +76,20 @@ namespace cihaztakip.business.Concrete
             var user = await _unitofwork.UserManager.FindByNameAsync(model.UserName);
             if (user == null)
             {
-                return new Result { Succeeded=false };
-           
+                return new Result { Succeeded = false };
+
             }
             var result = await _unitofwork.SignInManager.PasswordSignInAsync(user, model.Password, false, false);
 
             return new Result { Succeeded = result.Succeeded, Errors = result.ToString().Split(';').ToList() };
-       
+
         }
 
         public async Task LogOut()
         {
             await _unitofwork.SignInManager.SignOutAsync();//logout
 
-           
+
         }
 
         public async Task<Result> Register(RegisterModel model)
@@ -114,12 +115,12 @@ namespace cihaztakip.business.Concrete
                 }
                 else//role is not exist
                 {
-                    return new Result() { Succeeded = false,Errors=new List<string>() { "user Rolü atanamadı" } };
+                    return new Result() { Succeeded = false, Errors = new List<string>() { "user Rolü atanamadı" } };
                 }
-                return new Result(){ Succeeded =true};
+                return new Result() { Succeeded = true };
             }
             else// creation is failed
-                return  new Result() { Succeeded = false, Errors = result.Errors.Select(e => e.Description).ToList() }; 
+                return new Result() { Succeeded = false, Errors = result.Errors.Select(e => e.Description).ToList() };
 
 
 
@@ -146,7 +147,50 @@ namespace cihaztakip.business.Concrete
                     await _unitofwork.UserManager.RemoveFromRolesAsync(user, userRoles.ToArray<string>());//delete existing roles
                     await _unitofwork.UserManager.AddToRoleAsync(user, model.Role);//add new role
 
-                    return new Result() { Succeeded = true} ;
+                    return new Result() { Succeeded = true };
+                }
+            }
+            return new Result() { Succeeded = false };
+        }
+
+        public async Task<Result> CreateNewUser(NewUserModel model)
+        {
+
+            var user = new User()//create user entity
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                UserName = model.UserName,
+                Email = model.Email
+            };
+
+            var result = await _unitofwork.UserManager.CreateAsync(user, model.Password);//create user
+
+            return new Result() { Succeeded = result.Succeeded, Errors = result.Errors.Select(e => e.Description).ToList() };
+        }
+        public async Task<Result> AddRoleToUser(string email, string role)
+        {
+
+            var user = await _unitofwork.UserManager.FindByEmailAsync(email);
+
+            if (user == null) { return new Result() { Succeeded = false }; }
+
+            // Check if the selected role is not null and not empty
+            if (!string.IsNullOrEmpty(role))
+            {
+                // Check if the role exists
+                var roleExists = await _unitofwork.RoleManager.RoleExistsAsync(role);
+
+                if (roleExists)
+                {
+                    // Assign the user to the selected role
+                    await _unitofwork.UserManager.AddToRoleAsync(user, role);
+                    return new Result() { Succeeded = true };
+                }
+                else
+                {
+
+                    return new Result() { Succeeded = false };
                 }
             }
             return new Result() { Succeeded = false };

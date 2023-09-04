@@ -80,14 +80,16 @@ namespace cihaztakip.webui.Controllers
 
 
         }
-        public IActionResult NewUser()
+        public async Task<IActionResult> NewUser()
         {
 
-            var roles = _roleManager.Roles.Select(role => new SelectListItem
-            {
-                Value = role.Name,
-                Text = role.Name
-            }).ToList();
+            var roles = _identityService.GetRoles().Result
+       .Select(role => new SelectListItem
+       {
+           Text = role.Name,
+           Value = role.Name 
+       })
+       .ToList();
 
             ViewBag.Roles = roles;
 
@@ -97,47 +99,32 @@ namespace cihaztakip.webui.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> NewUser(NewUserModel model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid)//Validation and error handling
             {
-                return Json(new { success = false, message = "Form validation failed." });
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                return Json(new { success = false, message = string.Join("\n", errors) });
             }
 
-            var user = new User()
-            {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                UserName = model.UserName,
-                Email = model.Email
-            };
+            var result =await _identityService.CreateNewUser(model);//Create new user
 
-            var result = await _userManager.CreateAsync(user, model.Password);
-
-            if (result.Succeeded)
+            if (result.Succeeded)//Sucessfull
             {
-                // Check if the selected role is not null and not empty
-                if (!string.IsNullOrEmpty(model.Role))
+                result = await _identityService.AddRoleToUser(model.Email, model.Role);//add role
+
+                if (result.Succeeded)//Sucessfull
                 {
-                    // Check if the role exists
-                    var roleExists = await _roleManager.RoleExistsAsync(model.Role);
+                    return Json(new { success = true, redirectUrl = Url.Action("UserList") });
+                }
+                else//fail
+                {
 
-                    if (roleExists)
-                    {
-                        // Assign the user to the selected role
-                        await _userManager.AddToRoleAsync(user, model.Role);
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Seçilen rol geçersiz.");
-                        return Json(new { success = false, message = "Seçilen rol geçersiz." });
-                    }
+                    return Json(new { success = false, message = "Seçilen rol geçersiz." });
                 }
 
-                return Json(new { success = true, redirectUrl = Url.Action("UserList") });
             }
+            else//fail
+                return Json(new { success = false, message = string.Join("\n", result.Errors) });
 
-            var errors = result.Errors.Select(e => e.Description).ToList();
-            ModelState.AddModelError("", "Bilinmeyen hata oldu lütfen tekrar deneyiniz.");
-            return Json(new { success = false, message = string.Join(" ", errors) });
         }
 
 
