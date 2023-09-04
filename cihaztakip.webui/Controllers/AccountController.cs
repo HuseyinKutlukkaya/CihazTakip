@@ -80,7 +80,7 @@ namespace cihaztakip.webui.Controllers
                           .Select(e => e.ErrorMessage)
                           .ToList();
 
-                return Json(new { success = false, message = string.Join("\n", errors),errors=errı });
+                return Json(new { success = false, message = string.Join("\n", errors),errors= errors });
             }
             var user = new User()
             {
