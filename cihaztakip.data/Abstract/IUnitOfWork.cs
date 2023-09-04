@@ -10,6 +10,8 @@ namespace cihaztakip.data.Abstract
     {
         IDeviceRepository Devices { get; }
         IUserDeviceRepository UserDevices { get; }
+
+
         void Save();
         Task<int> SaveAsync();
 

@@ -1,4 +1,6 @@
 ﻿using cihaztakip.data.Abstract;
+using cihaztakip.entity;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +13,20 @@ namespace cihaztakip.data.Concrete.EfCore
     {
 
         private readonly ApplicationDbContext _context;
-        public UnitOfWork(ApplicationDbContext context)
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly SignInManager<User> _signInManager;
+
+        public UnitOfWork(
+            ApplicationDbContext context,
+            UserManager<User> userManager,
+            RoleManager<IdentityRole> roleManager,
+            SignInManager<User> signInManager)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _signInManager = signInManager;
         }
         private EfCoreDeviceRepository _deviceRepository;
         private EfCoreUserDeviceRepository _userRepository;
@@ -22,7 +35,14 @@ namespace cihaztakip.data.Concrete.EfCore
 
         public IUserDeviceRepository UserDevices =>
              _userRepository = _userRepository ?? new EfCoreUserDeviceRepository(_context);
+        
+        public UserManager<User> UserManager => _userManager;
 
+        
+        public RoleManager<IdentityRole> RoleManager => _roleManager;
+
+        
+        public SignInManager<User> SignInManager => _signInManager;
 
         public void Dispose()
         {
