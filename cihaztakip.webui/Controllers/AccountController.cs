@@ -5,6 +5,7 @@ using cihaztakip.webui.Models;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace cihaztakip.webui.Controllers
 {
@@ -44,14 +45,14 @@ namespace cihaztakip.webui.Controllers
                 var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
                 return Json(new { success = false, message = string.Join("\n", errors) });
             }
-            bool result= await _identityService.Login(model);//Login
-            if (result)//login succesfull
+            var result= await _identityService.Login(model);//Login
+            if (result.Succeeded)//login succesfull
             {
 
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "Home") });
             }
             else// login failed
-                return Json(new { success = false, message = "Kullanıcı adı veya şifre hatalı!" });
+                return Json(new { success = false, message = "Kullanıcı adı veya şifre hatalı!"});
            
         }
         [HttpGet]
@@ -62,37 +63,20 @@ namespace cihaztakip.webui.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterModel model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid)//Validation and error handling
             {
-                var errors = ModelState.Values
-                          .SelectMany(v => v.Errors)
-                          .Select(e => e.ErrorMessage)
-                          .ToList();
-
-                return Json(new { success = false, message = string.Join("\n", errors),errors= errors });
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                return Json(new { success = false, message = string.Join("\n", errors)});
             }
-            var user = new User()
+           var result=await _identityService.Register(model);//Register
+           
+            if (result.Succeeded)//register succesfull
             {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                UserName = model.UserName,
-                Email = model.Email,
-            };
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if (result.Succeeded)
-            {
-                string role = "user";
-                var roleExists = await _roleManager.RoleExistsAsync(role);
-
-                if (roleExists)
-                {
-                    // Assign the user to the selected role
-                    await _userManager.AddToRoleAsync(user, role);
-                }
-                return Json(new { success = true, redirectUrl = Url.Action("Login", "Account") });
+                return Json(new { success = true, redirectUrl = Url.Action("Index", "Home") });
             }
-            ModelState.AddModelError("", "Bir hata oluştu. Lütfen tekrar deneyin.");
-            return Json(new { success = false, message = "Kayıt başarısız.", errors=result.Errors });
+            else// register failed
+                return Json(new { success = false, message = string.Join("\n", result.Errors) });
+        
         }
 
 

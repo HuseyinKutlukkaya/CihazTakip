@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace cihaztakip.webui.Models
+namespace cihaztakip.entity.ViewModels
 {
     public class RegisterModel
     {

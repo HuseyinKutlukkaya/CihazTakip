@@ -9,7 +9,7 @@ namespace cihaztakip.business.Abstract
 {
     public interface IIdentityService
     {
-        public  Task<bool> Login(LoginModel model);
- 
+        public  Task<Result> Login(LoginModel model);
+        public  Task<Result> Register(RegisterModel model);
     }
 }
