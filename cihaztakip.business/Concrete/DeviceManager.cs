@@ -32,9 +32,12 @@ namespace cihaztakip.business.Concrete
             return  _unitofwork.Devices.GetAll();
         }
 
-        public List<Device> GetAllWithUserData()
+        public async Task<DeviceListViewModel> GetAllDevicesWithUserData()
         {
-            return _unitofwork.Devices.GetAllWithUserData();
+            DeviceListViewModel list = new DeviceListViewModel();
+            list.Devices = _unitofwork.Devices.GetAllDevicesWithUserData();
+
+            return list;
         }
 
 

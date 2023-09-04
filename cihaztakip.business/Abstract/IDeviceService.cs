@@ -11,7 +11,7 @@ namespace cihaztakip.business.Abstract
     public interface IDeviceService
     {
         List<Device> GetAll();
-        List<Device> GetAllWithUserData();
+        Task<DeviceListViewModel> GetAllDevicesWithUserData();
         List<Device> GetAllByUserId(string id);
         void Update(Device device);
         void Create(Device device);

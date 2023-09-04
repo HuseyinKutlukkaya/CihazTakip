@@ -9,7 +9,7 @@ namespace cihaztakip.data.Abstract
 {
     public interface IDeviceRepository : IRepository<Device> 
     {
-        List<Device> GetAllWithUserData();
+        List<Device> GetAllDevicesWithUserData();
         Device GetByIdWithUserDeviceData(int id);
         List<Device> GetAllByUserId(string id);
     }

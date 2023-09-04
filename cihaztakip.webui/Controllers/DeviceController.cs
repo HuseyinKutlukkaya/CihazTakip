@@ -23,11 +23,10 @@ namespace cihaztakip.webui.Controllers
             _userDeviceService = userDeviceService;
 
         }
-        public IActionResult DeviceList()
+        public async Task<IActionResult> DeviceList()
         {
-            DeviceListViewModel list = new DeviceListViewModel();
-            list.Devices = _deviceService.GetAllWithUserData();
-            return View(list);
+
+            return View(await _deviceService.GetAllDevicesWithUserData());
         }
 
         public IActionResult CreateDevice()

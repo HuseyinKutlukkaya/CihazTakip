@@ -32,7 +32,7 @@ namespace cihaztakip.data.Concrete.EfCore
             return devices;
         }
 
-        public List<Device> GetAllWithUserData()
+        public List<Device> GetAllDevicesWithUserData()
         {
             var devices = ApplicationDbContext.
                 Devices.
