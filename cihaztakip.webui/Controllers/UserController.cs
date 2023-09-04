@@ -131,30 +131,18 @@ namespace cihaztakip.webui.Controllers
         [HttpPost]
         public async Task<IActionResult> UserDelete(string userId)
         {
-            if (string.IsNullOrEmpty(userId))
+            var result=await _identityService.DeleteUserById(userId);//delete
+
+            if (result.Succeeded)//succesfull
             {
-                return RedirectToAction("UserList"); // Redirect to user list if the ID is empty or null.
-            }
-
-            var user = await _userManager.FindByIdAsync(userId);
-
-            if (user == null)
-            {
-                return RedirectToAction("UserList"); // Redirect to user list if the user is not found.
-            }
-
-            var result = await _userManager.DeleteAsync(user);
-
-            if (result.Succeeded)
-            {
-                // Return a JSON response indicating success
+                
                 return Json(new { success = true, message = " Kullanıcı başarıyla silindi." });
             }
-            else
+            else//fail
             {
             
-                var errors = result.Errors.Select(error => error.Description);
-                return Json(new { success = false, errors = errors });
+
+                return Json(new { success = false, message = string.Join("\n", result.Errors) });
             }
         }
 

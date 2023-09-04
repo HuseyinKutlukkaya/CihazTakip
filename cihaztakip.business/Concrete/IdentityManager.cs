@@ -195,5 +195,23 @@ namespace cihaztakip.business.Concrete
             }
             return new Result() { Succeeded = false };
         }
+        public async Task<Result> DeleteUserById(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                return new Result() { Succeeded = false };
+            }
+
+            var user = await _unitofwork.UserManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return new Result() { Succeeded = false }; // Redirect to user list if the user is not found.
+            }
+
+            var result = await _unitofwork.UserManager.DeleteAsync(user);
+
+            return new Result() { Succeeded = result.Succeeded, Errors = result.Errors.Select(e => e.Description).ToList() };
+        }
     }
 }

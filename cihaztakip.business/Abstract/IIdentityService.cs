@@ -22,5 +22,6 @@ namespace cihaztakip.business.Abstract
         public Task<Result> UpdateUser(UserDetailsModel model);
         public Task<Result> CreateNewUser(NewUserModel model);
         public Task<Result> AddRoleToUser(string userId,string role);
+        public Task<Result> DeleteUserById(string Id);
     }
 }
