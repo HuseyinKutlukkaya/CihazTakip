@@ -64,9 +64,31 @@ namespace cihaztakip.business.Concrete
            return await _unitofwork.Devices.GetByIdAsync(id);
         }
 
-        public async Task<Device> GetByIdWithUserDeviceData(int id)
+        public async Task<UserDeviceEditModel> GetDevicesByIdWithUserDeviceData(int id)
         {
-           return await _unitofwork.Devices.GetByIdWithUserDeviceData(id);
+
+            UserDeviceEditModel model = new UserDeviceEditModel();
+            var device = await _unitofwork.Devices.GetByIdWithUserDeviceData(id);
+            model.DeviceId = device.DeviceId;
+            model.DeviceName = device.Name;
+            if (device.UserDevices.Count > 0)
+            {
+                model.UserDeviceId = device.UserDevices[0].UserDeviceId;
+                model.UserId = device.UserDevices[0].UserId;
+                model.UserName = device.UserDevices[0].User.UserName;
+                model.FirstName = device.UserDevices[0].User.FirstName;
+                model.LastName = device.UserDevices[0].User.LastName;
+                model.Email = device.UserDevices[0].User.Email;
+
+                var user = await _unitofwork.UserManager.FindByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    var roles = await _unitofwork.UserManager.GetRolesAsync(user);
+                    model.Role = roles.FirstOrDefault();
+                }
+
+            }
+            return model;
         }
 
         public async Task Update(Device device)

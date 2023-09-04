@@ -67,53 +67,27 @@ namespace cihaztakip.webui.Controllers
 
         public async Task<IActionResult> EditDevice(int id)
         {
-
-            UserDeviceEditModel model = new UserDeviceEditModel();
-            var device =await _deviceService.GetByIdWithUserDeviceData(id);
-
-  
-            model.DeviceId = device.DeviceId;
-            model.DeviceName = device.Name;
-            if (device.UserDevices.Count>0)
-            {
-                model.UserDeviceId = device.UserDevices[0].UserDeviceId;
-                model.UserId = device.UserDevices[0].UserId;
-                model.UserName = device.UserDevices[0].User.UserName;
-                model.FirstName = device.UserDevices[0].User.FirstName;
-                model.LastName = device.UserDevices[0].User.LastName;
-                model.Email = device.UserDevices[0].User.Email;
-
-                var user = await _userManager.FindByEmailAsync(model.Email);
-                if (user != null)
-                {
-                    var roles = await _userManager.GetRolesAsync(user);
-                    model.Role = roles.FirstOrDefault();
-                }
-
-            }
+        
+            var model =await _deviceService.GetDevicesByIdWithUserDeviceData(id);
 
             return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> EditDevice(UserDeviceEditModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)//Validation and error handling
             {
-              
-
-                var device = await _deviceService.GetById(model.DeviceId);
-                device.Name = model.DeviceName;
-                await _deviceService.Update(device);
-
-                return Json(new { success = true, redirectUrl = Url.Action("DeviceList") });
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                return Json(new { success = false, message = string.Join("\n", errors) });
             }
-            else
-            {
-                var errors = ModelState.Values.SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage);
 
-                return Json(new { success = false, message = "Validation failed", errors = errors });
-            }
+            var device = await _deviceService.GetById(model.DeviceId);
+            device.Name = model.DeviceName;
+            await _deviceService.Update(device);
+
+            return Json(new { success = true, redirectUrl = Url.Action("DeviceList") });
+          
+      
         }
 
 

@@ -17,7 +17,7 @@ namespace cihaztakip.business.Abstract
         Task Create(Device device);
         Task<Result> Delete(int deviceId);
         Task<Device> GetById(int id);
-        Task<Device> GetByIdWithUserDeviceData(int id);
+        Task<UserDeviceEditModel> GetDevicesByIdWithUserDeviceData(int id);
 
         Task<DeviceListViewModel> GetDevicesOfCurrentUser(string userId);
     }
