@@ -40,11 +40,12 @@ namespace cihaztakip.webui.Controllers
             {
                 Device device = new Device() { Name = model.Name };
                 _deviceService.Create(device);
-                return RedirectToAction("DeviceList");
+                return Json(new { success = true, redirectUrl = Url.Action("DeviceList") });
             }
             ModelState.AddModelError("", "Bir Sıkıntı var tekrar dene.");
-            return View();
+            return Json(new { success = false, message = "Cihaz oluşturulamadı." });
         }
+
 
 
         [HttpPost]
