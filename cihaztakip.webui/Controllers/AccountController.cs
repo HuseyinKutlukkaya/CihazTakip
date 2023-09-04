@@ -75,8 +75,11 @@ namespace cihaztakip.webui.Controllers
         {
             if (!ModelState.IsValid)
             {
-
-                return View(model);
+                var errors = ModelState.Values
+             .SelectMany(v => v.Errors)
+             .Select(e => e.ErrorMessage)
+             .ToList();
+                return Json(new { success = false, message = "Validation failed" ,errors=errors});
             }
             var user = new User()
             {
@@ -96,11 +99,12 @@ namespace cihaztakip.webui.Controllers
                     // Assign the user to the selected role
                     await _userManager.AddToRoleAsync(user, role);
                 }
-                return RedirectToAction("Login", "Account");
+                return Json(new { success = true, redirectUrl = Url.Action("Login", "Account") });
             }
-            ModelState.AddModelError("", "Bir Sıkıntı var tekrar dene.");
-            return View();
+            ModelState.AddModelError("", "Bir hata oluştu. Lütfen tekrar deneyin.");
+            return Json(new { success = false, message = "Kayıt başarısız.", errors=result.Errors });
         }
+
 
         public async Task<IActionResult> Logout()
         {
