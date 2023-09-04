@@ -47,22 +47,20 @@ namespace cihaztakip.webui.Controllers
         }
 
 
-
         [HttpPost]
-        public async Task<IActionResult> DeleteDevice(int deviceId)
+        public IActionResult DeleteDevice(int deviceId)
         {
-            var device =  _deviceService.GetById(deviceId);
+            var device = _deviceService.GetById(deviceId);
 
             if (device != null)
             {
                 _deviceService.Delete(device);
+                return Json(new { success = true, message = $"{deviceId} Numaralı cihaz başarıyla silindi." });
             }
 
-           
-
-            return RedirectToAction("DeviceList");
+            return Json(new { success = false, message = "Cihaz bulunamadı." });
         }
-        
+
 
         public async Task<IActionResult> EditDevice(int id)
         {

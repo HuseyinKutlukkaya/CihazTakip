@@ -14,36 +14,51 @@
         <tbody>
             @foreach (Device Device in Model.Devices)
             {
-         
-
-                    <tr>
-
-                        <td>@Device.DeviceId</td>
-                        <td>@Device.Name</td>
-                        <td> @(Device.UserDevices.Count>0 ?"Var":"Yok") </td>
-                        <td>
-                            <a href="/device/editdevice/@Device.DeviceId" class="btn btn-primary btn-sm mr-2">Düzenle</a>
-                        </td>
-                        <td>
-                            <form asp-action="DeleteDevice" method="post" onsubmit="return confirm('@Device.DeviceId Numaralı cihazı silmek istediğinizden emin misiniz?')">
-                                <input type="hidden" name="deviceId" value="@Device.DeviceId" />
-                                <button type="submit" class="btn btn-danger  btn-sm mr-2">Sil</button>
-                            </form>
-                        </td>
-            
-                    </tr>
-       
-
+                <tr>
+                    <td>@Device.DeviceId</td>
+                    <td>@Device.Name</td>
+                    <td> @(Device.UserDevices.Count > 0 ? "Var" : "Yok") </td>
+                    <td>
+                        <a href="/device/editdevice/@Device.DeviceId" class="btn btn-primary btn-sm mr-2">Düzenle</a>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger btn-sm mr-2" onclick="deleteDevice(@Device.DeviceId)">Sil</button>
+                    </td>
+                </tr>
             }
-
-
         </tbody>
-
     </table>
 }
-else//TODO:EKRANA BİR SÜRÜ HATA YAZDIRIYO
+else
 {
     <div class="alert alert-warning">
-        <h3>Cihaz Bulunmamaktadır./h3>
+        <h3>Cihaz Bulunmamaktadır.</h3>
     </div>
 }
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function deleteDevice(deviceId) {
+        if (confirm(deviceId + " Numaralı cihazı silmek istediğinizden emin misiniz?")) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("DeleteDevice", "Device")",
+                data: { deviceId: deviceId },
+                success: function (result) {
+                    if (result.success) {
+                        // Reload the page after successful deletion
+                        window.location.reload();
+                    } else {
+                        // Display an error message returned from the server
+                        // You can customize this based on your application's needs
+                        alert(result.message);
+                    }
+                },
+                error: function () {
+                    // Handle errors, e.g., display a generic error message
+                    alert("Cihazı silerken bir hata oluştu.");
+                }
+            });
+        }
+    }
+</script>
