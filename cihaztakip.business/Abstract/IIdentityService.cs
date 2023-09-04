@@ -1,4 +1,6 @@
 ﻿using cihaztakip.entity.ViewModels;
+
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +15,10 @@ namespace cihaztakip.business.Abstract
         public  Task<Result> Register(RegisterModel model);
         public Task LogOut();
         public Task<UserListViewModel> GetAllUsersWithRoles();
+        public Task<UserDetailsModel> GetUserDetails(string id);
+        public Task<string> GetRoleOfUser(string id);
+        public Task<List<IdentityRole>> GetRoles();
+
+        public Task<Result> UpdateUser(UserDetailsModel model);
     }
 }

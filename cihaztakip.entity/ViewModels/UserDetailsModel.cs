@@ -1,9 +1,7 @@
-﻿namespace cihaztakip.entity.ViewModels
-{
-    using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-    namespace cihaztakip.entity.ViewModels
-    {
+namespace cihaztakip.entity.ViewModels
+{  
         public class UserDetailsModel
         {
 
@@ -30,6 +28,5 @@
             [Required(ErrorMessage = "Rol alanı gereklidir.")]
             public string Role { get; set; }
         }
-    }
 
 }

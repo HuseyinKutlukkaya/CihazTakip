@@ -1,10 +1,11 @@
 ﻿using cihaztakip.business.Abstract;
 using cihaztakip.entity;
-using cihaztakip.entity.ViewModels.cihaztakip.entity.ViewModels;
+using cihaztakip.entity.ViewModels;
 using cihaztakip.webui.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace cihaztakip.webui.Controllers
 {
@@ -19,23 +20,26 @@ namespace cihaztakip.webui.Controllers
             _roleManager = roleManager;
             _identityService = identityService;
         }
-        public IActionResult UserList()
+        public async Task<IActionResult> UserList()
         {
-            return View(_identityService.GetAllUsersWithRoles());
+            return View(await _identityService.GetAllUsersWithRoles());
         }
         public async Task<IActionResult> UserEdit(string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
-            if (user != null)
+            
+            var userdetails = await _identityService.GetUserDetails(id);
+            if (userdetails != null)
             {
-                string Role =  _userManager.GetRolesAsync(user).Result.FirstOrDefault();
-                var roles = _roleManager.Roles.Select(role => new SelectListItem
+                string Role =await  _identityService.GetRoleOfUser(id);//Get Role of the user
+
+                //create SelectListItem List
+                var roles =  _identityService.GetRoles().Result.Select(role => new SelectListItem
                 {
                     Value = role.Name,
                     Text = role.Name
                 }).ToList();
 
-                foreach (var item in roles)
+                foreach (var item in roles)//Select users role in the  SelectListItem List
                 {
                     if (item.Value == Role)
                     {
@@ -45,15 +49,7 @@ namespace cihaztakip.webui.Controllers
                 }
 
                 ViewBag.Roles = roles;
-                return View(new UserDetailsModel()
-                {
-                    UserId = user.Id,
-                    UserName = user.UserName,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Email = user.Email,
-                    Role = Role
-                });
+                return View(userdetails);
             }
 
             return RedirectToAction("UserList"); // If there is no user with the selected id
@@ -62,36 +58,26 @@ namespace cihaztakip.webui.Controllers
         [HttpPost]
         public async Task<IActionResult> UserEdit(UserDetailsModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)//Validation and error handling
             {
-                var user = await _userManager.FindByIdAsync(model.UserId);
-                if (user != null)
-                {
-                    user.FirstName = model.FirstName;
-                    user.LastName = model.LastName;
-                    user.UserName = model.UserName;
-                    user.Email = model.Email;
-         
-
-                    var result = await _userManager.UpdateAsync(user);
-
-                    if (result.Succeeded)
-                    {
-                        var userRoles = await _userManager.GetRolesAsync(user);
-
-                        await _userManager.RemoveFromRolesAsync(user, userRoles.ToArray<string>());//delete existing roles
-                        await _userManager.AddToRoleAsync(user, model.Role);//add new role
-
-                        return Json(new { success = true, redirectUrl = Url.Action("UserList") });
-                    }
-                }
-                
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                return Json(new { success = false, message = string.Join("\n", errors) });
             }
 
-            var errors = ModelState.Values.SelectMany(v => v.Errors)
-             .Select(e => e.ErrorMessage);
+            var result =await _identityService.UpdateUser(model);//update the user
 
-            return Json(new { success = false, message = "Validation failed", errors = errors });
+            if (result.Succeeded)//successfull
+            {
+                return Json(new { success = true, redirectUrl = Url.Action("UserList") });
+            }
+            else//fail
+            {
+                return Json(new { success = false, message = "Kullanıcı güncellenirken bir hata oluştu." });
+
+            }
+
+
+
 
         }
         public IActionResult NewUser()

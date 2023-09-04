@@ -6,6 +6,7 @@ using cihaztakip.entity.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
@@ -35,6 +36,38 @@ namespace cihaztakip.business.Concrete
                 }).ToList()
             };
             return userdata;
+        }
+
+        public async Task<string> GetRoleOfUser(string id)
+        {
+            var user = await _unitofwork.UserManager.FindByIdAsync(id);
+
+            return  _unitofwork.UserManager.GetRolesAsync(user).Result.FirstOrDefault().ToString();
+        }
+
+        public async Task<List<IdentityRole>> GetRoles()
+        {
+            return _unitofwork.RoleManager.Roles.ToList();
+        }
+
+        public async Task<UserDetailsModel> GetUserDetails(string id)
+        {
+
+            var user = await _unitofwork.UserManager.FindByIdAsync(id);
+            if (user!=null)
+            {
+                return new UserDetailsModel()
+                {
+                    UserId = user.Id,
+                    UserName = user.UserName,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    Role = await GetRoleOfUser(id)
+                };
+            }
+            
+            return null;
         }
 
         public async Task<Result> Login(LoginModel model)
@@ -90,6 +123,33 @@ namespace cihaztakip.business.Concrete
 
 
 
+        }
+
+        public async Task<Result> UpdateUser(UserDetailsModel model)
+        {
+            var user = await _unitofwork.UserManager.FindByIdAsync(model.UserId);
+
+            if (user != null)
+            {
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+                user.UserName = model.UserName;
+                user.Email = model.Email;
+
+
+                var result = await _unitofwork.UserManager.UpdateAsync(user);//update the user data
+
+                if (result.Succeeded)//if update is successfull then update the role
+                {
+                    var userRoles = await _unitofwork.UserManager.GetRolesAsync(user);
+
+                    await _unitofwork.UserManager.RemoveFromRolesAsync(user, userRoles.ToArray<string>());//delete existing roles
+                    await _unitofwork.UserManager.AddToRoleAsync(user, model.Role);//add new role
+
+                    return new Result() { Succeeded = true} ;
+                }
+            }
+            return new Result() { Succeeded = false };
         }
     }
 }
