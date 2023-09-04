@@ -38,8 +38,21 @@ namespace cihaztakip.webui.Controllers
             var user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
-                var selectedRoles = await _userManager.GetRolesAsync(user);
-                var roles = _roleManager.Roles.Select(role => role.Name).ToList();
+                string Role =  _userManager.GetRolesAsync(user).Result.FirstOrDefault();
+                var roles = _roleManager.Roles.Select(role => new SelectListItem
+                {
+                    Value = role.Name,
+                    Text = role.Name
+                }).ToList();
+
+                foreach (var item in roles)
+                {
+                    if (item.Value == Role)
+                    {
+                        item.Selected = true;
+                        break; 
+                    }
+                }
 
                 ViewBag.Roles = roles;
                 return View(new UserDetailsModel()
@@ -49,8 +62,7 @@ namespace cihaztakip.webui.Controllers
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Email = user.Email,
-                    EmailConfirmed = user.EmailConfirmed,
-                    SelectedRoles = selectedRoles
+                    Role = Role
                 });
             }
 
@@ -58,7 +70,7 @@ namespace cihaztakip.webui.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UserEdit(UserDetailsModel model, string[] selectedRoles)
+        public async Task<IActionResult> UserEdit(UserDetailsModel model)
         {
             if (ModelState.IsValid)
             {
@@ -69,16 +81,16 @@ namespace cihaztakip.webui.Controllers
                     user.LastName = model.LastName;
                     user.UserName = model.UserName;
                     user.Email = model.Email;
-                    user.EmailConfirmed = model.EmailConfirmed;
+         
 
                     var result = await _userManager.UpdateAsync(user);
 
                     if (result.Succeeded)
                     {
                         var userRoles = await _userManager.GetRolesAsync(user);
-                        selectedRoles = selectedRoles ?? new string[] { };
-                        await _userManager.AddToRolesAsync(user, selectedRoles.Except(userRoles).ToArray<string>());
-                        await _userManager.RemoveFromRolesAsync(user, userRoles.Except(selectedRoles).ToArray<string>());
+
+                        await _userManager.RemoveFromRolesAsync(user, userRoles.ToArray<string>());//delete existing roles
+                        await _userManager.AddToRoleAsync(user, model.Role);//add new role
 
                         return Redirect("UserList");
                     }

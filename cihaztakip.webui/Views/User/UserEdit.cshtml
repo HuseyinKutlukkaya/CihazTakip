@@ -3,71 +3,58 @@
 <h1 class="h3">Edit User</h1>
 <hr>
 <form asp-controller="User" asp-action="UserEdit" method="POST">
-    <div class="row">
-        <div class="col-md-12">
+    <div class="row mb-3">
+        <div class="col-md-12 ">
             <div asp-validation-summary="All" class="text-danger"></div>
         </div>
     </div>
-    <div class="row">
+    <div class="row mb-3">
         <div class="col-md-8">
             <input type="hidden" name="UserId" value="@Model.UserId">
 
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label asp-for="FirstName" class="col-sm-2 col-form-label"></label>
                 <div class="col-sm-10">
                     <input class="form-control" asp-for="FirstName">
                     <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label asp-for="LastName" class="col-sm-2 col-form-label"></label>
                 <div class="col-sm-10">
                     <input class="form-control" asp-for="LastName">
                     <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label asp-for="UserName" class="col-sm-2 col-form-label"></label>
                 <div class="col-sm-10">
                     <input class="form-control" asp-for="UserName">
                     <span asp-validation-for="UserName" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label asp-for="Email" class="col-sm-2 col-form-label"></label>
                 <div class="col-sm-10">
                     <input class="form-control" asp-for="Email">
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
             </div>
-
-            <div class="form-group row">
+            <div class="form-group row mb-3">
+                <label asp-for="Role" class="col-sm-2 col-form-label">Seç</label>
+                <div class="col-sm-10">
+                    <select asp-for="Role" asp-items="ViewBag.Roles" class="form-control">
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row mb-3">
                 <div class="col-sm-10 offset-sm-2">
                     <button type="submit" class="btn btn-primary">Güncelle</button>
                 </div>
             </div>
 
         </div>
-        <div class="col-md-4">
-@foreach (var rolename in ViewBag.Roles)
-{
-    <div class="custom-control custom-radio">
-        <input type="radio"
-               class="custom-control-input"
-               name="selectedRoles"
-               value="@rolename"
-               id="role-@rolename" 
-                @(Model.SelectedRoles.Any(i=>i==rolename)?"checked":"")>
-        <label class="custom-control-label" for="role-@rolename">@rolename</label>
-    </div>
-}
-
-
-            <hr>
-
-
-
-        </div>
+       
     </div>
 
 </form>
