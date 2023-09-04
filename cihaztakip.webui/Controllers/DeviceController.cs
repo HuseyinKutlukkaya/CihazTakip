@@ -94,13 +94,23 @@ namespace cihaztakip.webui.Controllers
         [HttpPost]
         public IActionResult EditDevice(UserDeviceEditModel model)
         {
-            
-         
-                var device=_deviceService.GetById(model.DeviceId);
+            if (ModelState.IsValid)
+            {
+              
+
+                var device = _deviceService.GetById(model.DeviceId);
                 device.Name = model.DeviceName;
                 _deviceService.Update(device);
-           
-            return RedirectToAction("DeviceList");
+
+                return Json(new { success = true, redirectUrl = Url.Action("DeviceList") });
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage);
+
+                return Json(new { success = false, message = "Validation failed", errors = errors });
+            }
         }
 
 

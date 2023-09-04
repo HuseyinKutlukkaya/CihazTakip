@@ -1,16 +1,14 @@
 ﻿@model UserDeviceEditModel
 @{
-    bool hasUser = Model.UserId == null ? false: true;
+    bool hasUser = !string.IsNullOrEmpty(Model.UserId);
 }
 <h2 class="mb-3">Cihaz Düzenleme</h2>
 
-
-
-<form asp-controller="Device" asp-action="EditDevice" method="POST">
+<form id="editDeviceForm" asp-controller="Device" asp-action="EditDevice" method="POST">
     <div asp-validation-summary="All" class="text-danger"></div>
 
     <input type="hidden" name="DeviceId" id="DeviceId" value="@Model.DeviceId">
-    
+
     <div class="form-group row mb-3">
         <label asp-for="DeviceName" class="col-sm-2 fw-bold col-form-label">Cihaz Adı</label>
         <div class="col-sm-10">
@@ -18,52 +16,38 @@
             <span asp-validation-for="DeviceName" class="text-danger"></span>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary">Güncelle</button>
-
+    <button type="button" id="updateDeviceButton" class="btn btn-primary">Cihazı Güncelle</button>
 
     <div class="form-group row mb-3">
         <label asp-for="Email" class="col-sm-2 fw-bold col-form-label">Email:</label>
         <div class="col-sm-6">
-            <input class="form-control" asp-for="Email" id="Email">
+            <input class="form-control" asp-for="Email" disabled>
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
         <div class="col-sm-2">
-            <button id="buttonUpdateUser" type="button" class="btn  btn-primary">Kullanıcıyı Güncelle</button>
+            <button id="buttonUpdateUser" type="button" class="btn btn-primary">Kullanıcıyı Güncelle</button>
         </div>
         <div class="col-sm-2">
-            <button id="buttonDeleteUser" type="button" class="btn   btn-danger" >Kullanıcıyı Kaldır</button>
+            <button id="buttonDeleteUser" type="button" class="btn btn-danger">Kullanıcıyı Kaldır</button>
         </div>
     </div>
 
-
-
-
-    @if (hasUser == true )
+    @if (hasUser)
     {
-
-
         <div class="row">
             <input type="hidden" name="UserDeviceId" id="UserDeviceId" value="@Model.UserDeviceId">
-
-            <div class="mb-3 col-sm-2">
-                <label for="Email" class="form-label fw-bold">Email:</label>
-                <input type="email" id="Email" class="form-control" value="@Model.Email" disabled>
-            </div>
             <div class="mb-3 col-sm-2">
                 <label for="FirstName" class="form-label fw-bold">İsim:</label>
                 <input type="text" id="FirstName" class="form-control" value="@Model.FirstName" disabled>
             </div>
-
             <div class="mb-3 col-sm-2">
                 <label for="LastName" class="form-label fw-bold">Soy İsim:</label>
                 <input type="text" id="LastName" class="form-control" value="@Model.LastName" disabled>
             </div>
-
             <div class="mb-3 col-sm-2">
                 <label for="UserName" class="form-label fw-bold">Kullanıcı Adı:</label>
                 <input type="text" id="UserName" class="form-control" value="@Model.UserName" disabled>
             </div>
-
             <div class="mb-3 col-sm-2">
                 <label for="Role" class="form-label fw-bold">Rol:</label>
                 <input type="text" id="Role" class="form-control" value="@Model.Role" disabled>
@@ -74,12 +58,34 @@
     {
         <h3 class="mb-3">Bu cihazın bir kullanıcısı yoktur</h3>
     }
-
-
-   
-
 </form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+
 <script>
+    $(document).ready(function () {
+        $("#updateDeviceButton").click(function () {
+            var formData = $("#editDeviceForm").serialize(); // Serialize the form data
+            var deviceId = $("#DeviceId").val(); // Get the device ID
+            console.log(formData);
+            $.ajax({
+                type: "POST",
+                url: "/device/editdevice", // URL for your edit device action
+                data: formData,
+                success: function (result) {
+                    if (result.success) {
+                        window.location.href = result.redirectUrl; // Redirect on success
+                    } else {
+                        alert("Hata: " + result.message);
+                    }
+                },
+                error: function (error) {
+                    alert("Cihaz güncellenirken bir hata oluştu.");
+                }
+            });
+        });
+    });
 
     document.getElementById("buttonUpdateUser").addEventListener("click", function () {
         var email = document.getElementById("Email").value;

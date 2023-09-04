@@ -2,31 +2,22 @@
 
 namespace cihaztakip.webui.Models
 {
-
-    //Class for editing device with user data 
+    // Class for editing device with user data 
     public class UserDeviceEditModel
     {
-        public int UserDeviceId { get; set; }
+        public int? UserDeviceId { get; set; }
         public int DeviceId { get; set; }
-        [Required()]
+
+        [Required(ErrorMessage = "Cihaz Adı alanı boş bırakılamaz.")]
         public string DeviceName { get; set; }
-        public string UserId { get; set; }
 
-        [Required()]
-        public string FirstName { get; set; }
+        public string? UserId { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? UserName { get; set; }
 
-        [Required]
-        public string LastName { get; set; }
-
-        [Required]
-        public string UserName { get; set; }
-
-        [Required]
-        [DataType(DataType.EmailAddress, ErrorMessage = "hata EmailAddress")]
-        public string Email { get; set; }
-
-        [Required]
-        public string Role { get; set; }
-
+        [DataType(DataType.EmailAddress, ErrorMessage = "Geçersiz bir e-posta adresi.")]
+        public string? Email { get; set; }
+        public string?    Role { get; set; }
     }
 }
