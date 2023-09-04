@@ -12,14 +12,11 @@ namespace cihaztakip.webui.Controllers
     public class DeviceController : Controller
     {
         private readonly IDeviceService _deviceService;
-        private UserManager<User> _userManager;
-        private RoleManager<IdentityRole> _roleManager;
         private IUserDeviceService _userDeviceService;
-        public DeviceController(IDeviceService deviceService, UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IUserDeviceService userDeviceService)
+        public DeviceController(IDeviceService deviceService,IUserDeviceService userDeviceService)
         {
             _deviceService = deviceService;
-            _userManager = userManager;
-            _roleManager = roleManager;
+
             _userDeviceService = userDeviceService;
 
         }

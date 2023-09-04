@@ -14,10 +14,10 @@ namespace cihaztakip.entity.ViewModels
 
         public string? UserId { get; set; }
 
-        [Display(Name = "Ad")]
+        [Display(Name = "İsim")]
         public string? FirstName { get; set; }
 
-        [Display(Name = "Soyad")]
+        [Display(Name = "Soyisim")]
         public string? LastName { get; set; }
 
         [Display(Name = "Kullanıcı Adı")]

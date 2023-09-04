@@ -12,5 +12,6 @@ namespace cihaztakip.business.Abstract
         public  Task<Result> Login(LoginModel model);
         public  Task<Result> Register(RegisterModel model);
         public Task LogOut();
+        public Task<UserListViewModel> GetAllUsersWithRoles();
     }
 }

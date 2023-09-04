@@ -1,5 +1,6 @@
 ﻿using cihaztakip.business.Abstract;
 using cihaztakip.entity;
+using cihaztakip.entity.ViewModels.cihaztakip.entity.ViewModels;
 using cihaztakip.webui.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,26 +12,16 @@ namespace cihaztakip.webui.Controllers
     {
         private UserManager<User> _userManager;
         private RoleManager<IdentityRole> _roleManager;
-        public UserController(UserManager<User> userManager,RoleManager<IdentityRole> roleManager)
+        private IIdentityService _identityService;
+        public UserController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IIdentityService identityService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _identityService = identityService;
         }
         public IActionResult UserList()
         {
-            //Get all the users
-            List<User> users = _userManager.Users.ToList(); 
-            var userdata = new UserListViewModel
-            {
-                Users = users.Select(user => new UserData
-                {
-                    User = user,
-                    Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault()
-                }).ToList()
-            };
-
-           
-            return View(userdata);
+            return View(_identityService.GetAllUsersWithRoles());
         }
         public async Task<IActionResult> UserEdit(string id)
         {

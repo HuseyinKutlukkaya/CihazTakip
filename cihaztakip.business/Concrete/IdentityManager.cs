@@ -20,6 +20,23 @@ namespace cihaztakip.business.Concrete
         {
             _unitofwork = unitofwork;
         }
+
+        public async Task<UserListViewModel> GetAllUsersWithRoles()
+        {
+           
+            List<User> users =  _unitofwork.UserManager.Users.ToList(); //Get all the users
+
+            var userdata = new UserListViewModel//Create user x role list
+            {
+                Users = users.Select(user => new UserData
+                {
+                    User = user,
+                    Role = _unitofwork.UserManager.GetRolesAsync(user).Result.FirstOrDefault()// get role of the user
+                }).ToList()
+            };
+            return userdata;
+        }
+
         public async Task<Result> Login(LoginModel model)
         {
             var user = await _unitofwork.UserManager.FindByNameAsync(model.UserName);
