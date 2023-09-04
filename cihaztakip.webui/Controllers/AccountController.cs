@@ -76,10 +76,11 @@ namespace cihaztakip.webui.Controllers
             if (!ModelState.IsValid)
             {
                 var errors = ModelState.Values
-             .SelectMany(v => v.Errors)
-             .Select(e => e.ErrorMessage)
-             .ToList();
-                return Json(new { success = false, message = "Validation failed" ,errors=errors});
+                          .SelectMany(v => v.Errors)
+                          .Select(e => e.ErrorMessage)
+                          .ToList();
+
+                return Json(new { success = false, message = string.Join("\n", errors),errors=errı });
             }
             var user = new User()
             {
