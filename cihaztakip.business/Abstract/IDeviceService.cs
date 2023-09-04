@@ -14,7 +14,7 @@ namespace cihaztakip.business.Abstract
         Task<DeviceListViewModel> GetAllDevicesWithUserData();
         List<Device> GetAllByUserId(string id);
         void Update(Device device);
-        void Create(Device device);
+        Task Create(Device device);
         void Delete(Device device);
         Device GetById(int id);
         Device GetByIdWithUserDeviceData(int id);

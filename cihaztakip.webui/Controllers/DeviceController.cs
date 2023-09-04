@@ -33,17 +33,21 @@ namespace cihaztakip.webui.Controllers
         {
             return View();
         }
+
         [HttpPost]
-        public IActionResult CreateDevice(DeviceModel model)
+        public async Task<IActionResult> CreateDevice(DeviceModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)//Validation and error handling
             {
-                Device device = new Device() { Name = model.Name };
-                _deviceService.Create(device);
-                return Json(new { success = true, redirectUrl = Url.Action("DeviceList") });
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                return Json(new { success = false, message = string.Join("\n", errors) });
             }
-            ModelState.AddModelError("", "Bir Sıkıntı var tekrar dene.");
-            return Json(new { success = false, message = "Cihaz oluşturulamadı." });
+
+            await _deviceService.Create(new Device() { Name = model.Name });//create device
+
+            return Json(new { success = true, redirectUrl = Url.Action("DeviceList") });//return
+        
+          
         }
 
 

@@ -21,10 +21,11 @@ namespace cihaztakip.business.Concrete
             _unitofwork = unitofwork;
         }
 
-        public void Create(Device device)
+        public async Task Create(Device device)
         {
             _unitofwork.Devices.Create(device);
-            _unitofwork.Save(); 
+
+            await _unitofwork.SaveAsync(); 
         }
 
         public List<Device> GetAll()
