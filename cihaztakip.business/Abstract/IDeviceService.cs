@@ -1,4 +1,5 @@
 ﻿using cihaztakip.entity;
+using cihaztakip.entity.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,7 @@ namespace cihaztakip.business.Abstract
         void Delete(Device device);
         Device GetById(int id);
         Device GetByIdWithUserDeviceData(int id);
+
+        Task<DeviceListViewModel> GetDevicesOfCurrentUser(string userId);
     }
 }

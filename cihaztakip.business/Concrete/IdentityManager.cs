@@ -34,6 +34,13 @@ namespace cihaztakip.business.Concrete
        
         }
 
+        public async Task LogOut()
+        {
+            await _unitofwork.SignInManager.SignOutAsync();//logout
+
+           
+        }
+
         public async Task<Result> Register(RegisterModel model)
         {
             var user = new User()//create a new user entity

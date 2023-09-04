@@ -1,6 +1,7 @@
 ﻿using cihaztakip.business.Abstract;
 using cihaztakip.business.Concrete;
 using cihaztakip.entity;
+using cihaztakip.entity.ViewModels;
 using cihaztakip.webui.Models;
 
 using Microsoft.AspNetCore.Identity;

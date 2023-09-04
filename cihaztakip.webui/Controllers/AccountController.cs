@@ -2,6 +2,7 @@
 using cihaztakip.entity;
 using cihaztakip.entity.ViewModels;
 using cihaztakip.webui.Models;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,17 +13,14 @@ namespace cihaztakip.webui.Controllers
     [AutoValidateAntiforgeryToken]
     public class AccountController : Controller
     {
-        private UserManager<User> _userManager;
-        private RoleManager<IdentityRole> _roleManager;
-        private SignInManager<User> _signInManager;
+
         private IDeviceService _deviceService;
         private IIdentityService _identityService;
-        public AccountController( UserManager<User> userManager, SignInManager<User> signInManager,IDeviceService deviceService, RoleManager<IdentityRole> roleManager,IIdentityService identityService)
+        public AccountController( IDeviceService deviceService,IIdentityService identityService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+
             _deviceService = deviceService;
-            _roleManager = roleManager;
+
             _identityService = identityService;
 
         }
@@ -82,17 +80,16 @@ namespace cihaztakip.webui.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
+            await _identityService.LogOut();
+
             return Redirect("~/");
         }
 
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
-            DeviceListViewModel list = new DeviceListViewModel();
-            string userId = _userManager.GetUserId(User);
-            list.Devices = _deviceService.GetAllByUserId(userId);
 
-            return View(list);
+
+            return View(await _deviceService.GetDevicesOfCurrentUser(User.Identity.GetUserId()));
         }
     }
 }
