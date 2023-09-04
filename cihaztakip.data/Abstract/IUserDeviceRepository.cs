@@ -9,6 +9,6 @@ namespace cihaztakip.data.Abstract
 {
     public interface IUserDeviceRepository:IRepository<UserDevice>
     {
-        public void DeleteAllUserData(string id);
+        public Task DeleteAllUserData(string id);
     }
 }

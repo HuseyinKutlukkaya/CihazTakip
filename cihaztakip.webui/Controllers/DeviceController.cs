@@ -52,16 +52,15 @@ namespace cihaztakip.webui.Controllers
 
 
         [HttpPost]
-        public IActionResult DeleteDevice(int deviceId)
+        public async Task<IActionResult> DeleteDevice(int deviceId)
         {
-            var device = _deviceService.GetById(deviceId);
+            var result = await _deviceService.Delete(deviceId);// delete device
 
-            if (device != null)
+            if (result.Succeeded)// delete is succesfull
             {
-                _deviceService.Delete(device);
                 return Json(new { success = true, message = $"{deviceId} Numaralı cihaz başarıyla silindi." });
             }
-
+            //delete failed
             return Json(new { success = false, message = "Cihaz bulunamadı." });
         }
 
@@ -70,7 +69,7 @@ namespace cihaztakip.webui.Controllers
         {
 
             UserDeviceEditModel model = new UserDeviceEditModel();
-            var device = _deviceService.GetByIdWithUserDeviceData(id);
+            var device =await _deviceService.GetByIdWithUserDeviceData(id);
 
   
             model.DeviceId = device.DeviceId;
@@ -96,15 +95,15 @@ namespace cihaztakip.webui.Controllers
             return View(model);
         }
         [HttpPost]
-        public IActionResult EditDevice(UserDeviceEditModel model)
+        public async Task<IActionResult> EditDevice(UserDeviceEditModel model)
         {
             if (ModelState.IsValid)
             {
               
 
-                var device = _deviceService.GetById(model.DeviceId);
+                var device = await _deviceService.GetById(model.DeviceId);
                 device.Name = model.DeviceName;
-                _deviceService.Update(device);
+                await _deviceService.Update(device);
 
                 return Json(new { success = true, redirectUrl = Url.Action("DeviceList") });
             }
@@ -119,7 +118,7 @@ namespace cihaztakip.webui.Controllers
 
 
         [HttpPost]
-        public IActionResult UpdateUser(string email, int deviceId,int userdeviceId)
+        public async Task<IActionResult> UpdateUser(string email, int deviceId,int userdeviceId)
         {
             var user = _userManager.FindByEmailAsync(email).Result;
 
@@ -130,15 +129,15 @@ namespace cihaztakip.webui.Controllers
 
                 if (userdeviceId >0)// there is userdevice  so update the user id 
                 {
-                    UserDevice userDevice = _userDeviceService.GetById(userdeviceId);
+                    UserDevice userDevice = await _userDeviceService.GetById(userdeviceId);
                     UserDevice newuserdevice = new UserDevice() { UserId = user.Id, DeviceId = userDevice.DeviceId };
-                    _userDeviceService.Update(newuserdevice,userDevice);
+                    await _userDeviceService.Update(newuserdevice,userDevice);
                 }
                 else// there no userdevice so create new one
                 {
                     UserDevice userDevice = new UserDevice() { DeviceId=deviceId,UserId=user.Id };
              
-                    _userDeviceService.Create(userDevice);
+                   await  _userDeviceService.Create(userDevice);
                 }
 
 
@@ -152,12 +151,12 @@ namespace cihaztakip.webui.Controllers
             }
         }
         [HttpPost]
-        public IActionResult DeleteUser(int deviceId, int userdeviceId)
+        public async Task<IActionResult> DeleteUser(int deviceId, int userdeviceId)
         {
-            var userdevice=_userDeviceService.GetById(userdeviceId);
+            var userdevice= await _userDeviceService.GetById(userdeviceId);
             if (userdevice != null)
             {
-                _userDeviceService.Delete(userdevice);
+                await _userDeviceService.Delete(userdevice);
 
                 return Json(new { success = true, redirectUrl = Url.Action("EditDevice", new { id = deviceId }) });
             }

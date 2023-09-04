@@ -18,31 +18,31 @@ namespace cihaztakip.business.Concrete
         {
             _unitofwork = unitofwork;
         }
-        public void Create(UserDevice userdevice)
+        public async  Task Create(UserDevice userdevice)
         {
-            _unitofwork.UserDevices.Create(userdevice);
-            _unitofwork.Save();
+           await _unitofwork.UserDevices.CreateAsync(userdevice);
+           await  _unitofwork.SaveAsync();
         }
 
-        public void Delete(UserDevice userdevice)
+        public async Task Delete(UserDevice userdevice)
         {
-            _unitofwork.UserDevices.Delete(userdevice);
-            _unitofwork.Save();
+            await _unitofwork.UserDevices.DeleteAsync(userdevice);
+            await _unitofwork.SaveAsync();
         }
 
-        public UserDevice GetById(int id)
+        public async Task <UserDevice> GetById(int id)
         {
-            return _unitofwork.UserDevices.GetById(id);
+            return await _unitofwork.UserDevices.GetByIdAsync(id);
         }
 
-        public void Update(UserDevice userdevice,UserDevice oldUserDevice)
+        public async  Task Update(UserDevice userdevice,UserDevice oldUserDevice)
         {
             /*
              * Can't update the fk
              * _unitofwork.UserDevices.Update(userdevice);
            '*/
-            Delete(oldUserDevice);
-            Create(userdevice);
+            await Delete(oldUserDevice);
+            await  Create(userdevice);
             
         }
     }

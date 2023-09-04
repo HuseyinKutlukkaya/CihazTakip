@@ -10,14 +10,14 @@ namespace cihaztakip.business.Abstract
 {
     public interface IDeviceService
     {
-        List<Device> GetAll();
+        Task<List<Device>> GetAll();
         Task<DeviceListViewModel> GetAllDevicesWithUserData();
-        List<Device> GetAllByUserId(string id);
-        void Update(Device device);
+        Task<List<Device>> GetAllByUserId(string id);
+        Task Update(Device device);
         Task Create(Device device);
-        void Delete(Device device);
-        Device GetById(int id);
-        Device GetByIdWithUserDeviceData(int id);
+        Task<Result> Delete(int deviceId);
+        Task<Device> GetById(int id);
+        Task<Device> GetByIdWithUserDeviceData(int id);
 
         Task<DeviceListViewModel> GetDevicesOfCurrentUser(string userId);
     }

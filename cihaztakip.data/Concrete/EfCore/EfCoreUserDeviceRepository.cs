@@ -19,7 +19,7 @@ namespace cihaztakip.data.Concrete.EfCore
             get { return context as ApplicationDbContext; }
         }
 
-        public void DeleteAllUserData(string id)
+        public async Task DeleteAllUserData(string id)
         {
             var recordsToDelete = ApplicationDbContext.UserDevices
                                    .Where(x => x.UserId == id)

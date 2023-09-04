@@ -23,56 +23,67 @@ namespace cihaztakip.business.Concrete
 
         public async Task Create(Device device)
         {
-            _unitofwork.Devices.Create(device);
+           await _unitofwork.Devices.CreateAsync(device);
 
             await _unitofwork.SaveAsync(); 
         }
 
-        public List<Device> GetAll()
+        public async Task<List<Device>> GetAll()
         {
-            return  _unitofwork.Devices.GetAll();
+            return await _unitofwork.Devices.GetAllAsync();
         }
 
         public async Task<DeviceListViewModel> GetAllDevicesWithUserData()
         {
             DeviceListViewModel list = new DeviceListViewModel();
-            list.Devices = _unitofwork.Devices.GetAllDevicesWithUserData();
+            list.Devices =await _unitofwork.Devices.GetAllDevicesWithUserData();
 
             return list;
         }
 
 
-        public void Delete(Device device)
+        public async Task<Result> Delete(int deviceId)
         {
-            _unitofwork.Devices.Delete(device);
-            _unitofwork.Save();
+
+            var device = await GetById(deviceId);//Check if device exist
+
+            if (device != null)// if device exist
+            {
+                await _unitofwork.Devices.DeleteAsync(device);
+                await _unitofwork.SaveAsync();
+                return new Result() { Succeeded=true };
+            }
+            else//device is not exist
+                return new Result() { Succeeded = false };
+
+
         }
 
-        public Device GetById(int id)
+        public async Task<Device> GetById(int id)
         {
-           return _unitofwork.Devices.GetById(id);
+           return await _unitofwork.Devices.GetByIdAsync(id);
         }
 
-        public Device GetByIdWithUserDeviceData(int id)
+        public async Task<Device> GetByIdWithUserDeviceData(int id)
         {
-           return _unitofwork.Devices.GetByIdWithUserDeviceData(id);
+           return await _unitofwork.Devices.GetByIdWithUserDeviceData(id);
         }
 
-        public void Update(Device device)
+        public async Task Update(Device device)
         {
-            _unitofwork.Devices.Update(device);
-            _unitofwork.Save();
+            await _unitofwork.Devices.UpdateAsync(device);
+            await _unitofwork.SaveAsync();
         }
 
-        public List<Device> GetAllByUserId(string id )
+        public async Task<List<Device>> GetAllByUserId(string id )
         {
-            return _unitofwork.Devices.GetAllByUserId(id);
+            return await _unitofwork.Devices.GetAllByUserId(id);
         }
 
         public async Task<DeviceListViewModel> GetDevicesOfCurrentUser(string userId)
         {
             DeviceListViewModel list = new DeviceListViewModel();
-            list.Devices = GetAllByUserId(userId);
+            list.Devices = await GetAllByUserId(userId);
 
             return list;
         }

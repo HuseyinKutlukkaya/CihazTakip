@@ -8,13 +8,15 @@ namespace cihaztakip.data.Abstract
 {
     public interface IRepository<T>
     {
-        T GetById(int id);
 
-        List<T> GetAll();
+        Task<T> GetByIdAsync(int id);
 
-        void Create(T entity);
+        Task<List<T>> GetAllAsync();
 
-        void Update(T entity);
-        void Delete(T entity);
+        Task CreateAsync(T entity);
+
+        Task UpdateAsync(T entity);
+
+        Task DeleteAsync(T entity);
     }
 }

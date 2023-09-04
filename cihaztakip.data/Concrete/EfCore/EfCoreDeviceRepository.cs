@@ -20,7 +20,7 @@ namespace cihaztakip.data.Concrete.EfCore
             get { return context as ApplicationDbContext; }
         }
 
-        public List<Device> GetAllByUserId(string id)
+        public async Task<List<Device>> GetAllByUserId(string id)
         {
             var devices = ApplicationDbContext.Devices
                          .Include(d => d.UserDevices)  // Include UserDevices 
@@ -32,7 +32,7 @@ namespace cihaztakip.data.Concrete.EfCore
             return devices;
         }
 
-        public List<Device> GetAllDevicesWithUserData()
+        public async Task<List<Device>> GetAllDevicesWithUserData()
         {
             var devices = ApplicationDbContext.
                 Devices.
@@ -45,7 +45,7 @@ namespace cihaztakip.data.Concrete.EfCore
             return devices;
         }
 
-        public Device GetByIdWithUserDeviceData(int id)
+        public async Task<Device> GetByIdWithUserDeviceData(int id)
         {
             return ApplicationDbContext.Devices.Where(i => i.DeviceId == id).
                 Include(i => i.UserDevices).

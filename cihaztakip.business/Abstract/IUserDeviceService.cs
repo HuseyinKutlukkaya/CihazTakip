@@ -9,9 +9,9 @@ namespace cihaztakip.business.Abstract
 {
     public interface IUserDeviceService
     {
-         void Update(UserDevice userdevice, UserDevice oldUserDevice);
-         void Create(UserDevice userdevice);
-        void Delete(UserDevice userdevice);
-        UserDevice GetById(int id);
+         Task Update(UserDevice userdevice, UserDevice oldUserDevice);
+        Task Create(UserDevice userdevice);
+        Task Delete(UserDevice userdevice);
+        Task<UserDevice> GetById(int id);
     }
 }
