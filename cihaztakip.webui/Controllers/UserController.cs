@@ -1,4 +1,5 @@
-﻿using cihaztakip.entity;
+﻿using cihaztakip.business.Abstract;
+using cihaztakip.entity;
 using cihaztakip.webui.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +19,7 @@ namespace cihaztakip.webui.Controllers
         public IActionResult UserList()
         {
             //Get all the users
-            List<User> users = _userManager.Users.ToList();
-
-            //create userlistviewmodel with user and role 
+            List<User> users = _userManager.Users.ToList(); 
             var userdata = new UserListViewModel
             {
                 Users = users.Select(user => new UserData
@@ -162,15 +161,14 @@ namespace cihaztakip.webui.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UserDelete(string id)
+        public async Task<IActionResult> UserDelete(string userId)
         {
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(userId))
             {
                 return RedirectToAction("UserList"); // Redirect to user list if the ID is empty or null.
             }
 
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
             {
@@ -181,21 +179,16 @@ namespace cihaztakip.webui.Controllers
 
             if (result.Succeeded)
             {
-                return RedirectToAction("UserList"); // Redirect to user list after successful deletion.
+                // Return a JSON response indicating success
+                return Json(new { success = true, message = " Kullanıcı başarıyla silindi." });
             }
             else
             {
-                // If there are errors in the deletion process, you can handle them here.
-                // For example, you can add errors to ModelState and return the view.
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
-
-                return View("UserList"); // Return to the user list view with error messages.
+            
+                var errors = result.Errors.Select(error => error.Description);
+                return Json(new { success = false, errors = errors });
             }
         }
-
 
     }
 }

@@ -3,48 +3,60 @@
 <table class="table">
     <thead>
         <tr>
-            <td >Email</td>
+            <td>Email</td>
             <td>Kullanıcı Adı</td>
-            <td >Ad</td>
+            <td>Ad</td>
             <td>Soyad</td>
-            <td >Rol</td>
-            <td ></td>
-            <td ></td>
+            <td>Rol</td>
+            <td></td>
+            <td></td>
         </tr>
     </thead>
     <tbody>
         @foreach (UserData User in Model.Users)
         {
-            @if (Model.Users.Count > 0)
-            {
-
-                <tr>
-
-                    <td>@User.User.Email</td>
-                    <td>@User.User.UserName</td>
-                    <td>@User.User.FirstName</td>
-                    <td>@User.User.LastName</td>
-                    <td>@User.Role</td>   
-                    <td>
-                        <a href="/user/useredit/@User.User.Id" class="btn btn-primary btn-sm mr-2">Düzenle</a> 
-                    </td>
-                    <td>
-                        <form asp-action="UserDelete" method="post" onsubmit="return confirm('@User.User.Email Mailine Sahip kullanıcıyı silmek istediğinizden emin misiniz?')">
-                            <input type="hidden" name="id" value="@User.User.Id" />
-                            <button type="submit" class="btn btn-danger  btn-sm mr-2">Sil</button>
-                        </form>
-                    </td>
-                </tr>
-            }
-            else
-            {
-                <div class="alert alert-warning">
-                    <h3>Kullanıcı Bulunmamaktadır./h3>
-                </div>
-            }
-
+            <tr>
+                <td>@User.User.Email</td>
+                <td>@User.User.UserName</td>
+                <td>@User.User.FirstName</td>
+                <td>@User.User.LastName</td>
+                <td>@User.Role</td>
+                <td>
+                    <a href="/user/useredit/@User.User.Id" class="btn btn-primary btn-sm mr-2">Düzenle</a>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger btn-sm mr-2" onclick="deleteUser(`@User.User.UserName`, `@User.User.Id`)">Sil</button>
+                </td>
+            </tr>
         }
-
-
     </tbody>
 </table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    function deleteUser(username,userId) {
+        if (confirm(username + " İsimli kullanıcıyı silmek istediğinizden emin misiniz?")) {
+          
+            $.ajax({
+                type: "POST",
+                url: "/user/UserDelete",
+                data: { userId: userId },
+                success: function (result) {
+                    if (result.success) {
+                        // Reload the page after successful deletion
+                        window.location.reload();
+                    } else {
+                        // Display an error message returned from the server
+                        // You can customize this based on your application's needs
+                        alert(result.message);
+                    }
+                },
+                error: function () {
+                    // Handle errors, e.g., display a generic error message
+                    alert("Kullanıcıyı silerken bir hata oluştu.");
+                }
+            });
+        }
+    }
+</script>

@@ -30,7 +30,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "@Url.Action("CreateDevice", "Device")", // Specify the URL of your action method
+                url: "@Url.Action("CreateDevice", "Device")",
                 data: formData,
                 success: function (result) {
                     if (result.success) {
