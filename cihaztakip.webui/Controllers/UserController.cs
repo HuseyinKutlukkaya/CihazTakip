@@ -116,14 +116,13 @@ namespace cihaztakip.webui.Controllers
 
             return View();
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> NewUser(NewUserModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return Json(new { success = false, message = "Form validation failed." });
             }
 
             var user = new User()
@@ -152,16 +151,18 @@ namespace cihaztakip.webui.Controllers
                     else
                     {
                         ModelState.AddModelError("", "Seçilen rol geçersiz.");
-                        return View(model);
+                        return Json(new { success = false, message = "Seçilen rol geçersiz." });
                     }
                 }
 
-                return RedirectToAction("UserList");
+                return Json(new { success = true, redirectUrl = Url.Action("UserList") });
             }
 
+            var errors = result.Errors.Select(e => e.Description).ToList();
             ModelState.AddModelError("", "Bilinmeyen hata oldu lütfen tekrar deneyiniz.");
-            return View(model);
+            return Json(new { success = false, message = string.Join(" ", errors) });
         }
+
 
         [HttpPost]
         public async Task<IActionResult> UserDelete(string userId)
