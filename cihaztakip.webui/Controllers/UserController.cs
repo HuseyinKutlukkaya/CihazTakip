@@ -91,13 +91,16 @@ namespace cihaztakip.webui.Controllers
                         await _userManager.RemoveFromRolesAsync(user, userRoles.ToArray<string>());//delete existing roles
                         await _userManager.AddToRoleAsync(user, model.Role);//add new role
 
-                        return Redirect("UserList");
+                        return Json(new { success = true, redirectUrl = Url.Action("UserList") });
                     }
                 }
-                return Redirect("UserList");
+                
             }
 
-            return View(model);
+            var errors = ModelState.Values.SelectMany(v => v.Errors)
+             .Select(e => e.ErrorMessage);
+
+            return Json(new { success = false, message = "Validation failed", errors = errors });
 
         }
         public IActionResult NewUser()
