@@ -4,10 +4,13 @@ namespace cihaztakip.webui.Models
 {
     public class LoginModel
     {
-        [Required]
+        [Display(Name = "Kullanıcı Adı")]
+        [Required(ErrorMessage = "Kullanıcı Adı Boş Olamaz")]
         public string UserName { get; set; }
 
-        [Required]
+        
+        [Display(Name = "Şifre")]
+        [Required(ErrorMessage = "Şifre Boş Olamaz")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 

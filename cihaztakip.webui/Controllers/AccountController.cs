@@ -44,7 +44,7 @@ namespace cihaztakip.webui.Controllers
              .Select(e => e.ErrorMessage)
              .ToList();
 
-                return Json(new { success = false, message = "Validation failed", errors = errors });
+                return Json(new { success = false, message = string.Join("\n", errors) });
 
             }
             var user = await _userManager.FindByNameAsync(model.UserName);
