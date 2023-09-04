@@ -3,12 +3,13 @@ using cihaztakip.business.Concrete;
 using cihaztakip.entity;
 using cihaztakip.entity.ViewModels;
 using cihaztakip.webui.Models;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cihaztakip.webui.Controllers
 {
+    [Authorize(Roles = "admin,authorized")]
     public class DeviceController : Controller
     {
         private readonly IDeviceService _deviceService;

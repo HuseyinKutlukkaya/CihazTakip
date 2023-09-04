@@ -1,6 +1,7 @@
 ﻿@model UserDeviceEditModel
 @{
     bool hasUser = !string.IsNullOrEmpty(Model.UserId);
+    bool isAdmin = User.IsInRole("admin");
 }
 <h2 class="mb-3">Cihaz Düzenleme</h2>
 
@@ -12,12 +13,28 @@
     <div class="form-group row mb-3">
         <label asp-for="DeviceName" class="col-sm-2 fw-bold col-form-label">Cihaz Adı</label>
         <div class="col-sm-10">
-            <input class="form-control" asp-for="DeviceName">
+            @if (isAdmin)
+            {
+                <input class="form-control" asp-for="DeviceName">
+            }
+            else
+            {
+                <input class="form-control" asp-for="DeviceName" disabled>
+            }
+           
+           
             <span asp-validation-for="DeviceName" class="text-danger"></span>
         </div>
     </div>
-    <button type="button" id="updateDeviceButton" class="btn btn-primary">Cihazı Güncelle</button>
-
+   
+    @if (isAdmin)
+    {
+        <button type="button" id="updateDeviceButton" class="btn btn-primary">Cihazı Güncelle</button>
+    }
+    else
+    {
+        <button type="button" id="updateDeviceButton" class="btn btn-primary" disabled>Cihazı Güncelle</button>
+    }
     <div class="form-group row mb-3">
         <label asp-for="Email" class="col-sm-2 fw-bold col-form-label">Email:</label>
         <div class="col-sm-6">

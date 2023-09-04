@@ -16,33 +16,66 @@
                 <li class="nav-item">
                     <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Ana Sayfa</a>
                 </li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (User.IsInRole("admin"))
+                    {
+                        <li class="nav-item dropdown ">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Kullanıcılar
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                                <li><a class="dropdown-item text-white" href="/user/userlist">Kullanıcı Listesi</a></li>
+                                <li><a class="dropdown-item text-white" href="/user/newuser">Kullanıcı Ekleme</a></li>
+                            </ul>
+                        </li>
 
-                <li class="nav-item dropdown ">
-                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Kullanıcılar
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                        <li><a class="dropdown-item text-white" href="/user/userlist">Kullanıcı Listesi</a></li>
-                        <li><a class="dropdown-item text-white" href="/user/newuser">Kullanıcı Ekleme</a></li>
-                    </ul>
-                </li>
+                    }
+                    @if (User.IsInRole("admin") || User.IsInRole("authorized"))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Cihazlar
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Cihazlar
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                        <li><a class="dropdown-item text-white" href="/device/deviceList">Cihaz Listesi</a></li>
-                        <li><a class="dropdown-item text-white" href="/device/createdevice">Cihaz Ekleme </a></li>
-                        <li><a class="dropdown-item text-white" href="#">Cihaz Düzenleme </a></li>
-                        <li><a class="dropdown-item text-white" href="#">Kullanıcıya Atama </a></li>
-                        <li><a class="dropdown-item text-white" href="#">Kullanıcıdan Çık. </a></li>
-                    </ul>
-                </li>
+                                @if (User.IsInRole("admin") || User.IsInRole("authorized"))
+                                {
+                                    <li><a class="dropdown-item text-white" href="/device/deviceList">Cihaz Listesi</a></li>
+                                }
+                                @if (User.IsInRole("admin"))
+                                {
+                                    <li><a class="dropdown-item text-white" href="/device/createdevice">Cihaz Ekleme </a></li>
+                                    <li><a class="dropdown-item text-white" href="/device/deviceList">Cihaz Düzenleme </a></li>
+                                }
+                                @if (User.IsInRole("admin") || User.IsInRole("authorized"))
+                                {
 
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/account/profile">Profilim</a>
-                </li>
+                                    <li><a class="dropdown-item text-white" href="/device/deviceList">Kullanıcıya Atama </a></li>
+                                    <li><a class="dropdown-item text-white" href="/device/deviceList">Kullanıcıdan Çıkarma </a></li>
+                                }
+
+                            </ul>
+
+                        </li>
+
+                    }
+                   
+
+
+
+
+                    <li class="nav-item">
+                                <a class="nav-link text-white" href="/account/profile">Profilim</a>
+                     </li>
+             
+                
+                }
+ 
+
+              
+
+
 
 
             </ul>
@@ -51,7 +84,7 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <li class="nav-item">
-                        <a href="/account/manage" class="nav-link text-white">
+                        <a href="/account/profile" class="nav-link text-white">
                             [@roltext] @User.Identity.Name
                         </a>
                     </li>

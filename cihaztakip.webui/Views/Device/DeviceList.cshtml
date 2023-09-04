@@ -1,4 +1,9 @@
 ﻿@model DeviceListViewModel
+
+@{
+    bool isAdmin = User.IsInRole("admin");
+}
+
 @if (Model.Devices.Count > 0)
 {
     <table class="table">
@@ -21,9 +26,15 @@
                     <td>
                         <a href="/device/editdevice/@Device.DeviceId" class="btn btn-primary btn-sm mr-2">Düzenle</a>
                     </td>
-                    <td>
-                        <button type="button" class="btn btn-danger btn-sm mr-2" onclick="deleteDevice(@Device.DeviceId)">Sil</button>
-                    </td>
+                    @if (isAdmin)
+                    {
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm mr-2" onclick="deleteDevice(@Device.DeviceId)">Sil</button>
+                        </td>
+
+                    }
+
+
                 </tr>
             }
         </tbody>

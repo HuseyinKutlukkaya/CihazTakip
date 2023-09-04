@@ -2,6 +2,7 @@
 using cihaztakip.entity;
 using cihaztakip.entity.ViewModels;
 using cihaztakip.webui.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,6 +10,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace cihaztakip.webui.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class UserController : Controller
     {
         private UserManager<User> _userManager;
