@@ -81,9 +81,9 @@ namespace cihaztakip.webui.Controllers
                 return Json(new { success = false, message = string.Join("\n", errors) });
             }
 
-            var device = await _deviceService.GetById(model.DeviceId);
-            device.Name = model.DeviceName;
-            await _deviceService.Update(device);
+            var device = await _deviceService.GetById(model.DeviceId);//get device by id
+            device.Name = model.DeviceName;// update the name 
+            await _deviceService.Update(device);// update the device 
 
             return Json(new { success = true, redirectUrl = Url.Action("DeviceList") });
           
@@ -94,47 +94,29 @@ namespace cihaztakip.webui.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateUser(string email, int deviceId,int userdeviceId)
         {
-            var user = _userManager.FindByEmailAsync(email).Result;
 
-            if (user != null)
+            var result =await  _userDeviceService.AddOrUpdateUserToDevice( email,  deviceId,  userdeviceId);// Update or add the user 
+          
+
+            if (result.Succeeded)// Success
             {
-
-                // userdeviceId returns  -1 if device has  no user
-
-                if (userdeviceId >0)// there is userdevice  so update the user id 
-                {
-                    UserDevice userDevice = await _userDeviceService.GetById(userdeviceId);
-                    UserDevice newuserdevice = new UserDevice() { UserId = user.Id, DeviceId = userDevice.DeviceId };
-                    await _userDeviceService.Update(newuserdevice,userDevice);
-                }
-                else// there no userdevice so create new one
-                {
-                    UserDevice userDevice = new UserDevice() { DeviceId=deviceId,UserId=user.Id };
-             
-                   await  _userDeviceService.Create(userDevice);
-                }
-
-
                 return Json(new { success = true, redirectUrl = Url.Action("EditDevice", new { id = deviceId }) });
             }
-            else
+            else//Fail
             {
-                // Kullanıcı bulunamadı, hata mesajı göster
                 return Json(new { success = false, message = "Kullanıcı Bulunamadı!" });
-
             }
         }
         [HttpPost]
         public async Task<IActionResult> DeleteUser(int deviceId, int userdeviceId)
         {
-            var userdevice= await _userDeviceService.GetById(userdeviceId);
-            if (userdevice != null)
+            var result= await _userDeviceService.DeleteUserFromDevice(userdeviceId, userdeviceId);//delete user from device 
+            if (result.Succeeded)//Success
             {
-                await _userDeviceService.Delete(userdevice);
 
                 return Json(new { success = true, redirectUrl = Url.Action("EditDevice", new { id = deviceId }) });
             }
-            else
+            else//Fail
             {
                 return Json(new { success = false, message = "Cihaza ait bir kullanıcı bulunmamaktadır!" });
             }
