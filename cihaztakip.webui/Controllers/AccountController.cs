@@ -1,5 +1,6 @@
 ﻿using cihaztakip.business.Abstract;
 using cihaztakip.entity;
+using cihaztakip.entity.ViewModels;
 using cihaztakip.webui.Models;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Identity;
@@ -14,12 +15,14 @@ namespace cihaztakip.webui.Controllers
         private RoleManager<IdentityRole> _roleManager;
         private SignInManager<User> _signInManager;
         private IDeviceService _deviceService;
-        public AccountController( UserManager<User> userManager, SignInManager<User> signInManager,IDeviceService deviceService, RoleManager<IdentityRole> roleManager)
+        private IIdentityService _identityService;
+        public AccountController( UserManager<User> userManager, SignInManager<User> signInManager,IDeviceService deviceService, RoleManager<IdentityRole> roleManager,IIdentityService identityService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _deviceService = deviceService;
             _roleManager = roleManager;
+            _identityService = identityService;
 
         }
         public IActionResult AccessDenied()
@@ -36,32 +39,18 @@ namespace cihaztakip.webui.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid)//Validation and error handling
             {
-
-                var errors = ModelState.Values
-             .SelectMany(v => v.Errors)
-             .Select(e => e.ErrorMessage)
-             .ToList();
-
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
                 return Json(new { success = false, message = string.Join("\n", errors) });
-
             }
-            var user = await _userManager.FindByNameAsync(model.UserName);
-            if (user == null)
-            {
-                ModelState.AddModelError("", "Bu kullanıcı adı ile bir kayıt yoktur");
-                return Json(new { success = false, message = "Kullanıcı adı veya şifre hatalı!" });
-            }
-
-            var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
-
-            if (result.Succeeded)
+            bool result= await _identityService.Login(model);//Login
+            if (result)//login succesfull
             {
 
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "Home") });
             }
-            else
+            else// login failed
                 return Json(new { success = false, message = "Kullanıcı adı veya şifre hatalı!" });
            
         }

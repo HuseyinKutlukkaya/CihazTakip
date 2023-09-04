@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(o => o.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddUserManager<CustomUserManager>().AddDefaultTokenProviders();
+builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
 
 
@@ -52,11 +52,11 @@ builder.Services.ConfigureApplicationCookie(options => {
 });
 
 
-builder.Services.AddScoped<UserManager<User>, CustomUserManager>();
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IDeviceService, DeviceManager>();
 builder.Services.AddScoped<IUserDeviceService, UserDeviceManager>();
-
+builder.Services.AddScoped<IIdentityService, IdentityManager>();
 
 
 var app = builder.Build();
@@ -84,7 +84,7 @@ name: "default",
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var userManager = services.GetRequiredService<CustomUserManager>();
+    var userManager = services.GetRequiredService<UserManager<User>>();
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
     var configuration = services.GetRequiredService<IConfiguration>();
     SeedIdentity.Seed(userManager, roleManager, configuration).Wait();
