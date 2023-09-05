@@ -42,7 +42,7 @@ namespace cihaztakip.webui.Controllers
                     },
                     new NavDescriptionModel
                     {
-                        Title = "Kullanıcı Ekleme",
+                        Title = "Yeni Kullanıcı Ekleme",
                         Roles = "Erişilebilir Roller: Admin",
                         Description="Yeni kullanıcı eklenebilir.",
                         Route = "/User/NewUser"
@@ -70,14 +70,14 @@ namespace cihaztakip.webui.Controllers
                     },
                     new NavDescriptionModel
                     {
-                        Title = "Kullanıcıya Atama",
+                        Title = "Cihaza Kullanıcı Atama",
                         Roles = "Erişilebilir Roller: Admin, Authorized",
                         Description="Cihazlar listesinden cihazı düzenle seçeneği seçilerek, seçilen cihaza yeni veya farklı bir kullanıcı atanabilir.",
                         Route = "/Device/deviceList"
                     },
                     new NavDescriptionModel
                     {
-                        Title = "Kullanıcıdan Çıkarma",
+                        Title = "Cihazdan Kullanıcı Çıkarma",
                         Roles = "Erişilebilir Roller: Admin, Authorized",
                         Description="Cihazlar listesinden cihazı düzenle seçeneği seçilerek, seçilen cihaza bağlı bir kullanıcı varsa cihazdan kaldırılabilir.",
                         Route = "/Device/deviceList"

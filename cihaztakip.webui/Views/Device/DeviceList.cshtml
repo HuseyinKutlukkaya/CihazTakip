@@ -24,11 +24,11 @@
                     <td>@Device.Name</td>
                     <td > @(Device.UserDevices.Count > 0 ? "Var" : "Yok") </td>
                     <td>
-                        <a href="/device/editdevice/@Device.DeviceId" class="btn btn-primary btn-sm mr-2">Düzenle</a>
+                        <a href="/device/editdevice/@Device.DeviceId" class="btn btn-primary btn-sm mr-2">Cihazı Düzenle</a>
                         @if (isAdmin)
                         {
 
-                            <button type="button" class="btn btn-danger btn-sm mr-2" onclick="deleteDevice(@Device.DeviceId)">Sil</button>
+                            <button type="button" class="btn btn-danger btn-sm mr-2" onclick="deleteDevice(@Device.DeviceId)">Cihazı Sil</button>
 
 
                         }
