@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34018.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cihaztakip.webui", "cihaztakip.webui\cihaztakip.webui.csproj", "{A1B8F709-AD30-4DDC-A8DC-98EFFC8A129C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cihaztakip.WebUI", "cihaztakip.webui\cihaztakip.WebUI.csproj", "{A1B8F709-AD30-4DDC-A8DC-98EFFC8A129C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cihaztakip.entity", "cihaztakip.entity\cihaztakip.entity.csproj", "{EBC0CC38-715D-4282-8133-36E321921DAB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cihaztakip.Entity", "cihaztakip.entity\cihaztakip.Entity.csproj", "{EBC0CC38-715D-4282-8133-36E321921DAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cihaztakip.data", "cihaztakip.data\cihaztakip.data.csproj", "{0C7A22CE-0797-44B1-A67C-A25F0B9B3FD6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cihaztakip.Data", "cihaztakip.data\cihaztakip.Data.csproj", "{0C7A22CE-0797-44B1-A67C-A25F0B9B3FD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cihaztakip.business", "cihaztakip.business\cihaztakip.business.csproj", "{0D620216-93A8-465B-9B9C-79183C2DAF32}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cihaztakip.Business", "cihaztakip.business\cihaztakip.Business.csproj", "{0D620216-93A8-465B-9B9C-79183C2DAF32}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

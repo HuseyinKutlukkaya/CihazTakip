@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\cihaztakip.entity\cihaztakip.entity.csproj" />
+    <ProjectReference Include="..\cihaztakip.entity\cihaztakip.Entity.csproj" />
   </ItemGroup>
 
 </Project>

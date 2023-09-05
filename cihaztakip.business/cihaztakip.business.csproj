@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\cihaztakip.data\cihaztakip.data.csproj" />
-    <ProjectReference Include="..\cihaztakip.entity\cihaztakip.entity.csproj" />
+    <ProjectReference Include="..\cihaztakip.data\cihaztakip.Data.csproj" />
+    <ProjectReference Include="..\cihaztakip.entity\cihaztakip.Entity.csproj" />
   </ItemGroup>
 
 </Project>
