@@ -48,7 +48,7 @@ To create the necessary database schema and tables, you can use Entity Framework
 
 1. Open a terminal or command prompt.
 
-2. Navigate to the project's Data project where your DbContext is located.
+2. Navigate to the solution's Data project where your `ApplicationDbContext.cs` is located.
 
 3. Run the following command to create a migration:
 
