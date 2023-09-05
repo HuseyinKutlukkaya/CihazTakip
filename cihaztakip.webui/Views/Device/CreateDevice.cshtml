@@ -1,0 +1,51 @@
+﻿@model DeviceModel
+
+<h1 class="h3">Cihaz Oluştur</h1>
+<hr />
+<form id="deviceForm" asp-controller="Device" asp-action="CreateDevice" method="post">
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+    </div>
+    <div class="form-group row mb-3">
+        <label asp-for="Name" class="col-sm-2 col-form-label">Cihaz Adı</label>
+        <div class="col-sm-10 mb-3">
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row mb-3">
+        <div class="col-sm-10 offset-sm-2">
+            <button type="button" id="saveButton" class="btn btn-primary">Kaydet</button>
+        </div>
+    </div>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#saveButton").click(function () {
+            var formData = $("#deviceForm").serialize(); // Serialize the form data
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("CreateDevice", "Device")",
+                data: formData,
+                success: function (result) {
+                    if (result.success) {
+                        window.location.href = result.redirectUrl; // Redirect to the success page
+                    } else {
+
+                        alert("Hata:\n" + result.message);
+                    }
+                },
+
+                error: function () {
+
+                    alert("Cihaz oluşturulurken bir hata oluştu.");
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,16 @@
+﻿@using cihaztakip.WebUI.Models;
+@model NavDescriptionModel
+
+<div class="col-md-4 mb-3">
+    <div class="card" style="height:220px">
+        <h4 class="card-header">@Model.Title</h4>
+        <div class="card-body">
+            <h6 class="card-title">@Model.Roles</h6>
+            <p class="card-text text-center" style="height:60px">@Model.Description</p>
+            <div class="text-center">
+                <!-- Butonu ortalamak için -->
+                <a href="@Model.Route" class="btn btn-primary">Gitmek İçin Tıkla</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,60 @@
+﻿@model UserListViewModel
+
+<table class="table">
+    <thead>
+        <tr>
+            <td scope="col">Email</td>
+            <td scope="col">Kullanıcı Adı</td>
+            <td scope="col">İsim</td>
+            <td scope="col">Soyisim</td>
+            <td scope="col">Rol</td>
+            <td scope="col"></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (UserData User in Model.Users)
+        {
+            <tr scope="row">
+                <td>@User.User.Email</td>
+                <td>@User.User.UserName</td>
+                <td>@User.User.FirstName</td>
+                <td>@User.User.LastName</td>
+                <td>@User.Role</td>
+                <td>
+                    <a href="/user/useredit/@User.User.Id" class="btn btn-primary btn-sm mr-2">Düzenle</a>
+                    <button type="button" class="btn btn-danger btn-sm mr-2" onclick="deleteUser(`@User.User.UserName`, `@User.User.Id`)">Sil</button>
+
+                </td>
+  
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    function deleteUser(username,userId) {
+        if (confirm(username + " İsimli kullanıcıyı silmek istediğinizden emin misiniz?")) {
+          
+            $.ajax({
+                type: "POST",
+                url: "/user/UserDelete",
+                data: { userId: userId },
+                success: function (result) {
+                    if (result.success) {
+                     
+                        window.location.reload();
+                    } else {
+                       
+                        alert("Hata:\n" + result.message);
+                    }
+                },
+                error: function () {
+          
+                    alert("Kullanıcıyı silerken bir hata oluştu.");
+                }
+            });
+        }
+    }
+</script>

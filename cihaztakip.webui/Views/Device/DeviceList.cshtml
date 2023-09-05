@@ -1,0 +1,75 @@
+﻿@model DeviceListViewModel
+
+@{
+    bool isAdmin = User.IsInRole("admin");
+}
+
+@if (Model.Devices.Count > 0)
+{
+    <table class="table ">
+        <thead>
+            <tr>
+                <td scope="col">Cihaz Id</td>
+                <td scope="col">Cihaz Adı</td>
+                <td scope="col">Cihaz Kullanıcısı</td>
+                <td scope="col"></td>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Device Device in Model.Devices)
+            {
+                <tr scope="row">
+                    <td>@Device.DeviceId</td>
+                    <td>@Device.Name</td>
+                    <td > @(Device.UserDevices.Count > 0 ? "Var" : "Yok") </td>
+                    <td>
+                        <a href="/device/editdevice/@Device.DeviceId" class="btn btn-primary btn-sm mr-2">Cihazı Düzenle</a>
+                        @if (isAdmin)
+                        {
+
+                            <button type="button" class="btn btn-danger btn-sm mr-2" onclick="deleteDevice(@Device.DeviceId)">Cihazı Sil</button>
+
+
+                        }
+                    </td>
+              
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-warning text-center">
+        <h3>Cihaz Bulunmamaktadır.</h3>
+    </div>
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function deleteDevice(deviceId) {
+        if (confirm(deviceId + " Numaralı cihazı silmek istediğinizden emin misiniz?")) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("DeleteDevice", "Device")",
+                data: { deviceId: deviceId },
+                success: function (result) {
+                    if (result.success) {
+
+                        window.location.reload();
+                    } else {
+
+
+                        alert("Hata:\n" + result.message);
+                    }
+                },
+                error: function () {
+                 
+                    alert("Cihazı silerken bir hata oluştu.");
+                }
+            });
+        }
+    }
+</script>

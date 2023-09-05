@@ -1,0 +1,38 @@
+﻿@model cihaztakip.entity.ViewModels.DeviceListViewModel
+
+
+@if (Model.Devices.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <td  scope="col">Cihaz Id</td>
+                <td scope="col">Cihaz Adı</td>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Device Device in Model.Devices)
+            {
+
+
+                <tr scope="row">
+
+                        <td>@Device.DeviceId</td>
+                        <td>@Device.Name</td>
+
+                    </tr>
+    
+
+            }
+
+
+        </tbody>
+    </table>
+}
+else 
+{
+    <div class="alert alert-warning text-center">
+        <h3>Cihaz Bulunmamaktadır.</h3>
+    </div>
+}

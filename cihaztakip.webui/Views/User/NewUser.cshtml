@@ -1,0 +1,104 @@
+﻿@model NewUserModel
+
+<h1 class="h3">Yeni Kullanıcı Oluştur</h1>
+<hr>
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-controller="User" asp-action="NewUser" method="POST" id="newUserForm">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="form-group row mb-3">
+                <label asp-for="FirstName" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <input class="form-control" asp-for="FirstName">
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row mb-3">
+                <label asp-for="LastName" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <input class="form-control" asp-for="LastName">
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row mb-3">
+                <label asp-for="UserName" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <input class="form-control" asp-for="UserName">
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row mb-3">
+                <label asp-for="Password" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <input class="form-control" asp-for="Password">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row mb-3">
+                <label asp-for="RePassword" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <input class="form-control" asp-for="RePassword">
+                    <span asp-validation-for="RePassword" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row mb-3">
+                <label asp-for="Email" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <input class="form-control" asp-for="Email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row mb-3">
+                <label asp-for="Role" class="col-sm-2 col-form-label">Seç</label>
+                <div class="col-sm-10">
+                    <select asp-for="Role" asp-items="ViewBag.Roles" class="form-control">
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row mb-3">
+                <div class="col-sm-10 offset-sm-2">
+                    <button type="button" id="registerUserButton" class="btn btn-primary">Kayıt Ol</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#registerUserButton").click(function () {
+          
+                // Serialize the form data
+                var formData = $("#newUserForm").serialize();
+
+     
+                $.ajax({
+                    type: "POST",
+                    url: "/User/NewUser", 
+                    data: formData,
+                    success: function (result) {
+                        if (result.success) {
+
+                            window.location.href = result.redirectUrl;
+                        } else {
+                          
+                            alert("Hata:\n" + result.message);
+                        }
+                    },
+                    error: function () {
+                     
+                        alert("Kayıt olunurken bir hata oluştu.");
+                    }
+                });
+            });
+        });
+    </script>
+}

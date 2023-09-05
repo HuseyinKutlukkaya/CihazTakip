@@ -1,0 +1,52 @@
+﻿using cihaztakip.data.Abstract;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace cihaztakip.data.Concrete.EfCore
+{
+    public class EfCoreGenericRepository<TEntity> : IRepository<TEntity>
+           where TEntity : class
+    {
+        protected readonly DbContext context;
+        public EfCoreGenericRepository(DbContext ctx)
+        {
+            context = ctx;
+        }
+      
+        public virtual void Update(TEntity entity)
+        {
+            context.Entry(entity).State = EntityState.Modified;
+        }
+        public async Task CreateAsync(TEntity entity)
+        {
+            await context.Set<TEntity>().AddAsync(entity);
+        }
+
+        public async Task UpdateAsync(TEntity entity)
+        {
+            context.Entry(entity).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(TEntity entity)
+        {
+            context.Set<TEntity>().Remove(entity);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task<List<TEntity>> GetAllAsync()
+        {
+            return await context.Set<TEntity>().ToListAsync();
+        }
+
+        public async Task<TEntity> GetByIdAsync(int id)
+        {
+            return await context.Set<TEntity>().FindAsync(id);
+        }
+
+    }
+}

@@ -1,0 +1,95 @@
+﻿@model RegisterModel
+
+<h1 class="h3">Register</h1>
+<hr>
+
+<div class="row">
+    <div class="col-md-8">
+        <form id="registerForm" asp-controller="Account" asp-action="Register" method="POST">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="form-group row mb-3">
+                <label asp-for="FirstName" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <input class="form-control" asp-for="FirstName">
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row mb-3">
+                <label asp-for="LastName" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <input class="form-control" asp-for="LastName">
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row mb-3">
+                <label asp-for="UserName" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <input class="form-control" asp-for="UserName">
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row mb-3">
+                <label asp-for="Password" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <input class="form-control" asp-for="Password">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row mb-3">
+                <label asp-for="RePassword" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <input class="form-control" asp-for="RePassword">
+                    <span asp-validation-for="RePassword" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row mb-3">
+                <label asp-for="Email" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <input class="form-control" asp-for="Email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row mb-3">
+                <div class="col-sm-10 offset-sm-2">
+                    <button type="button" id="registerButton" class="btn btn-primary">Kaydol</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts
+    {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/modules/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="/modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#registerButton").click(function () {
+                var formData = $("#registerForm").serialize(); // Serialize the form data
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Register", "Account")", 
+                    data: formData,
+                    success: function (result) {
+                        if (result.success) {
+
+                            window.location.href = result.redirectUrl;
+                        } else {
+
+                            alert("Hata:\n" + result.message);
+                        }
+                    },
+                    error: function () {
+        
+                        alert("Kayıt işlemi başarısız.");
+                    }
+                });
+            });
+        });
+    </script>
+}
