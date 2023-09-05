@@ -3,19 +3,18 @@
 <table class="table">
     <thead>
         <tr>
-            <td>Email</td>
-            <td>Kullanıcı Adı</td>
-            <td>İsim</td>
-            <td>Soyisim</td>
-            <td>Rol</td>
-            <td></td>
-            <td></td>
+            <td scope="col">Email</td>
+            <td scope="col">Kullanıcı Adı</td>
+            <td scope="col">İsim</td>
+            <td scope="col">Soyisim</td>
+            <td scope="col">Rol</td>
+            <td scope="col"></td>
         </tr>
     </thead>
     <tbody>
         @foreach (UserData User in Model.Users)
         {
-            <tr>
+            <tr scope="row">
                 <td>@User.User.Email</td>
                 <td>@User.User.UserName</td>
                 <td>@User.User.FirstName</td>
@@ -23,10 +22,10 @@
                 <td>@User.Role</td>
                 <td>
                     <a href="/user/useredit/@User.User.Id" class="btn btn-primary btn-sm mr-2">Düzenle</a>
-                </td>
-                <td>
                     <button type="button" class="btn btn-danger btn-sm mr-2" onclick="deleteUser(`@User.User.UserName`, `@User.User.Id`)">Sil</button>
+
                 </td>
+  
             </tr>
         }
     </tbody>

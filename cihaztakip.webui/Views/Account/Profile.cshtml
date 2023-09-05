@@ -6,17 +6,17 @@
     <table class="table">
         <thead>
             <tr>
-                <td>Cihaz Id</td>
-                <td>Cihaz Adı</td>
+                <td  scope="col">Cihaz Id</td>
+                <td scope="col">Cihaz Adı</td>
 
             </tr>
         </thead>
         <tbody>
             @foreach (Device Device in Model.Devices)
             {
-       
 
-                    <tr>
+
+                <tr scope="row">
 
                         <td>@Device.DeviceId</td>
                         <td>@Device.Name</td>
@@ -32,7 +32,7 @@
 }
 else 
 {
-    <div class="alert alert-warning">
+    <div class="alert alert-warning text-center">
         <h3>Cihaz Bulunmamaktadır.</h3>
     </div>
 }
