@@ -9,11 +9,11 @@
     <table class="table">
         <thead>
             <tr>
-                <td>Cihaz Id</td>
-                <td>Cihaz Adı</td>
-                <td>Cihaz Kullanıcısı</td>
-                <td></td>
-                <td></td>
+                <td style="width:10%">Cihaz Id</td>
+                <td style="width:10%">Cihaz Adı</td>
+                <td style="width:10%">Cihaz Kullanıcısı</td>
+                <td style="width:10%"></td>
+
             </tr>
         </thead>
         <tbody>
@@ -25,14 +25,15 @@
                     <td> @(Device.UserDevices.Count > 0 ? "Var" : "Yok") </td>
                     <td>
                         <a href="/device/editdevice/@Device.DeviceId" class="btn btn-primary btn-sm mr-2">Düzenle</a>
-                    </td>
-                    @if (isAdmin)
-                    {
-                        <td>
-                            <button type="button" class="btn btn-danger btn-sm mr-2" onclick="deleteDevice(@Device.DeviceId)">Sil</button>
-                        </td>
+                        @if (isAdmin)
+                        {
 
-                    }
+                            <button type="button" class="btn btn-danger btn-sm mr-2" onclick="deleteDevice(@Device.DeviceId)">Sil</button>
+
+
+                        }
+                    </td>
+               
 
 
                 </tr>
